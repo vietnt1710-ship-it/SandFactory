@@ -1,0 +1,162 @@
+﻿using DG.Tweening;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.DebugUI;
+
+
+public class Tube : MonoBehaviour
+{
+    public float duration = 0.1f;
+    private float startY = 0.2f;
+
+    public float stepY = 0.4f;
+    public float stepLiqiudX = 0.4f;
+
+    public Material liquidMaterial;
+    public MeshRenderer liquid;
+    public ColorID colors;
+
+    private List<int> passengerIndexs = new List<int>() {9,4,4,9,4,4,9,6,4,4,5,5,6,6,7,7,5,4,3,2};
+    public List<MeshRenderer> liquids = new List<MeshRenderer>();
+
+    public Transform pouringPosition;
+
+    public MeshRenderer waterDrop;
+
+    public void Start()
+    {
+        GeneratePassenger();
+    }
+    Tween waterTween;
+    public void FillWater(float target, float duration, float delay = 0f)
+    {
+        // Kill tween cũ nếu đang chạy
+        waterTween?.Kill();
+
+        float currentFill = waterDrop.material.GetFloat("_Fill");
+
+        waterTween = DOTween.To(
+            () => currentFill,
+            x => waterDrop.material.SetFloat("_Fill", x),
+            target,
+            duration
+        )
+
+        .SetEase(Ease.Linear)
+        .SetDelay(delay)
+        .OnComplete(() => Debug.Log("Fill completed!"));
+    }
+
+    public void StartDropWater(int count)
+    {
+        waterDrop.material.color = colors.colorWithIDs[passengerIndexs[0] - 1].color;
+        waterDrop.material.SetFloat("_Fill", 0);
+        FillWater(0.5f, 0.2f);
+
+        DOVirtual.DelayedCall((duration * count)*0.6f, () =>
+        {
+            FillWater(1, 0.5f);
+        });
+    }
+    public void Pour(int count)
+    {
+        StartDropWater(count);
+        float duration = this.duration * 0.7f;
+        Sequence mainSeq = DOTween.Sequence();
+        isPouring = true;
+
+        for (int i = 0; i < count; i++)
+        {
+            passengerIndexs.RemoveAt(0);
+            MeshRenderer liquid = liquids[0];
+            liquids.RemoveAt(0);
+
+            float targetY = liquid.gameObject.transform.position.y;
+            targetY -= stepY * i;
+            mainSeq.Join(liquid.transform.DOMoveY(targetY, duration * i).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                float valueA = liquid.material.GetFloat("_Fill");
+                float targetA = 0;
+
+                DOTween.To(() => valueA, x => valueA = x, targetA, duration)
+                  .SetEase(Ease.Linear).OnUpdate(() => liquid.material.SetFloat("_Fill", valueA));
+            }));
+        }
+        for (int i = 0; i < liquids.Count; i++)
+        {
+            float targetY = liquids[i].gameObject.transform.position.y;
+            targetY -= stepY * count;
+            mainSeq.Join(liquids[i].transform.DOMoveY(targetY , duration * count).SetEase(Ease.Linear));
+        }
+        DOVirtual.DelayedCall(duration * count, () =>
+        {
+            isPouring = false;
+        });
+
+    }
+
+    [HideInInspector] public bool isPouring = false;
+
+
+    public event Action<List<int>> OnPouringDone;
+    public void PouringDone()
+    {
+        isPouring = false;
+        List<int> colorGroup = new List<int>();
+        colorGroup.Add(passengerIndexs[0]);
+        for (int i = 1; i < passengerIndexs.Count; i++)
+        {
+            if (passengerIndexs[i] == passengerIndexs[0]) colorGroup.Add(i);
+            else break;
+        }
+
+        OnPouringDone?.Invoke(colorGroup);
+    }
+    public List<int> FindColorGroup()
+    {
+        if(!isPouring)
+        {
+            List<int> colorGroup = new List<int>();
+            colorGroup.Add(passengerIndexs[0]);
+            for (int i = 1; i < passengerIndexs.Count; i++)
+            {
+                if (passengerIndexs[i] == passengerIndexs[0]) colorGroup.Add(i);
+                else break;
+            }
+            return colorGroup;
+        }
+
+        else
+        {
+            return null;
+        }
+    }
+  
+    public void GeneratePassenger()
+    {
+        for (int i = 0; i < passengerIndexs.Count; i++)
+        {
+            var go_Li = Instantiate(liquid);
+            go_Li.transform.SetParent(transform, false);
+            go_Li.transform.localPosition = new Vector3(0, startY + ( (i+1) * stepY), 0);
+            ChangeColor(colors.colorWithIDs[passengerIndexs[i] -1], go_Li.material);
+            go_Li.gameObject.SetActive(true);
+            liquids.Add(go_Li);
+
+            if (i < passengerIndexs.Count - 1 )
+                if (passengerIndexs[i] == passengerIndexs[i + 1])
+                    go_Li.material.SetFloat("_Fill", 0.45f);
+        }
+    }
+    public void ChangeColor(ColorWithID color, Material liquid)
+    {
+        //.material.SetColor("_LiquidColor" "_SurfaceColor" _PresenalColor _OutLine_Color)
+        liquid.SetColor("_LiquidColor", color.liquidColor);
+        liquid.SetColor("_SurfaceColor", color.surfaceColor);
+        liquid.SetColor("_PresenalColor", color.gradiantColor);
+
+    }
+}

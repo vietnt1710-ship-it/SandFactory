@@ -1,0 +1,220 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7914d3670b445cc40b4638089b2b62fd, type: 3}
+  m_Name: PIC2_save_at_2025-10-21_09-54-43
+  m_EditorClassIdentifier: 
+  painting:
+    line: {fileID: -5730901647436650973, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    linePosition: {x: 0.0049996376, y: 4.15, z: 0}
+    activeOnStart: []
+    pieceList:
+    - id: 9_base (UnityEngine.GameObject)
+      neighbors:
+      - 13_base
+      - 7_base
+      - 4_base
+      - 5_base
+      - 8_base
+      - 14_base
+      _colorID: 4
+      _amount: 7
+      piecePosition: {x: -1.7050002, y: 4.325, z: 0}
+      textPosition: {x: -0.15180707, y: -0.3093891, z: 0}
+      raw: {fileID: -1008188828785637161, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 13_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 7_base
+      - 14_base
+      _colorID: 4
+      _amount: 3
+      piecePosition: {x: -1.7950001, y: 4.865, z: 0}
+      textPosition: {x: 0.13537586, y: -0.0606575, z: 0}
+      raw: {fileID: -8088737760929582037, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 7_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 13_base
+      - 16_base
+      - 4_base
+      - 15_base
+      - 8_base
+      - 10_base
+      - 14_base
+      _colorID: 5
+      _amount: 17
+      piecePosition: {x: -0.71500015, y: 4.88, z: 0}
+      textPosition: {x: 0.07415515, y: 0.13795853, z: 0}
+      raw: {fileID: -8043883084636302422, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 16_base (UnityEngine.GameObject)
+      neighbors:
+      - 7_base
+      - 15_base
+      - 14_base
+      _colorID: 7
+      _amount: 12
+      piecePosition: {x: -0.26999998, y: 5.455, z: 0}
+      textPosition: {x: 0.3850236, y: 0.12164307, z: 0}
+      raw: {fileID: 606032385096531233, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 4_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 7_base
+      - 5_base
+      - 3_base
+      - 2_base
+      - 10_base
+      _colorID: 3
+      _amount: 5
+      piecePosition: {x: -0.7000003, y: 3.7849998, z: 0}
+      textPosition: {x: -0.04222983, y: 0.06815338, z: 0}
+      raw: {fileID: -8662101575989515838, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 11_base (UnityEngine.GameObject)
+      neighbors:
+      - 12_base
+      - 6_base
+      - 10_base
+      _colorID: 4
+      _amount: 6
+      piecePosition: {x: 1.8799996, y: 4.245, z: 0}
+      textPosition: {x: 0.19042325, y: -0.032206535, z: 0}
+      raw: {fileID: 7368398123957663353, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 12_base (UnityEngine.GameObject)
+      neighbors:
+      - 11_base
+      - 15_base
+      - 10_base
+      _colorID: 4
+      _amount: 11
+      piecePosition: {x: 1.5549998, y: 4.705, z: 0}
+      textPosition: {x: 0.121056914, y: 0.017184258, z: 0}
+      raw: {fileID: 1121585255663865873, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 6_base (UnityEngine.GameObject)
+      neighbors:
+      - 11_base
+      - 1_base
+      - 3_base
+      - 2_base
+      - 10_base
+      _colorID: 5
+      _amount: 3
+      piecePosition: {x: 1.4249997, y: 3.79, z: 0}
+      textPosition: {x: 0.48110425, y: -0.03730011, z: 0}
+      raw: {fileID: 2419057316833057843, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 5_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 4_base
+      - 1_base
+      - 2_base
+      _colorID: 5
+      _amount: 2
+      piecePosition: {x: -1.7650001, y: 3.735, z: 0}
+      textPosition: {x: 0.17110372, y: -0.031596422, z: 0}
+      raw: {fileID: 4784925821505042013, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 1_base (UnityEngine.GameObject)
+      neighbors:
+      - 6_base
+      - 5_base
+      - 2_base
+      _colorID: 1
+      _amount: 23
+      piecePosition: {x: 0.0049996376, y: 3.01, z: 0}
+      textPosition: {x: -1.770996, y: -0.12942481, z: 0}
+      raw: {fileID: -495188522317766368, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 3_base (UnityEngine.GameObject)
+      neighbors:
+      - 4_base
+      - 6_base
+      - 2_base
+      - 10_base
+      _colorID: 8
+      _amount: 9
+      piecePosition: {x: 0.3499999, y: 3.435, z: 0}
+      textPosition: {x: -0.05422488, y: 0.104085445, z: 0}
+      raw: {fileID: -5159970558369960953, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 15_base (UnityEngine.GameObject)
+      neighbors:
+      - 7_base
+      - 16_base
+      - 12_base
+      - 10_base
+      _colorID: 2
+      _amount: 15
+      piecePosition: {x: 1.1399999, y: 5.295, z: 0}
+      textPosition: {x: -0.1376524, y: -0.1127224, z: 0}
+      raw: {fileID: 5578735895089239922, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 8_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 7_base
+      _colorID: 6
+      _amount: 3
+      piecePosition: {x: -1.1500001, y: 4.42, z: 0}
+      textPosition: {x: 0.065493464, y: -0.042886734, z: 0}
+      raw: {fileID: -529979606660900517, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 2_base (UnityEngine.GameObject)
+      neighbors:
+      - 4_base
+      - 6_base
+      - 5_base
+      - 1_base
+      - 3_base
+      _colorID: 2
+      _amount: 17
+      piecePosition: {x: 0.12999964, y: 3.28, z: 0}
+      textPosition: {x: -0.76985353, y: -0.19467092, z: 0}
+      raw: {fileID: -3040059159694368336, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 10_base (UnityEngine.GameObject)
+      neighbors:
+      - 7_base
+      - 4_base
+      - 11_base
+      - 12_base
+      - 6_base
+      - 3_base
+      - 15_base
+      _colorID: 4
+      _amount: 10
+      piecePosition: {x: 0.7149997, y: 4.42, z: 0}
+      textPosition: {x: -0.1891774, y: -0.27293396, z: 0}
+      raw: {fileID: -782836285619585336, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+    - id: 14_base (UnityEngine.GameObject)
+      neighbors:
+      - 9_base
+      - 13_base
+      - 7_base
+      - 16_base
+      _colorID: 2
+      _amount: 11
+      piecePosition: {x: -1.6450002, y: 5.335, z: 0}
+      textPosition: {x: -0.26110315, y: -0.0048360825, z: 0}
+      raw: {fileID: 5335503630411457975, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 0}
+  storge:
+    storgeItems: []
+  gridDataFile: {fileID: 0}

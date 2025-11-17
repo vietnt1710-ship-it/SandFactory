@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8827629e773a28e489ee8dc5203eb141, type: 3}
+  m_Name: pic7 1
+  m_EditorClassIdentifier: 
+  difficulty: 1
+  currentSprites:
+  - id: 7
+    sprite: {fileID: -2049870927463963782, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 59413145724774250, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 2.0749998, y: 3.605}
+  - id: 16
+    sprite: {fileID: 4682617804150896231, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 7309278549343242479, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.0849996, y: 5.365}
+  - id: 1
+    sprite: {fileID: -3572576957457782199, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: -8639270112419963057, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -0.0800004, y: 2.74}
+  - id: 14
+    sprite: {fileID: -8174293981574294918, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: -2028858319107999832, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.6350002, y: 4.075}
+  - id: 12
+    sprite: {fileID: 1027538637952981407, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 4477460496498610214, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 0.4249997, y: 4.335}
+  - id: 8
+    sprite: {fileID: 5110465556422944298, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: -6707749794070977579, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -0.26999998, y: 4.31}
+  - id: 13
+    sprite: {fileID: -16312275777257509, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 328818469119145719, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.2399998, y: 4.765}
+  - id: 11
+    sprite: {fileID: -5484334933194384926, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 799952707186430427, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.1500001, y: 3.97}
+  - id: 17
+    sprite: {fileID: -5018941636829427182, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 7810270826304594479, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.6100001, y: 5.505}
+  - id: 15
+    sprite: {fileID: -4278175319599715855, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 8667313740040883348, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.2850003, y: 5.165}
+  - id: 6
+    sprite: {fileID: 5884275775408698647, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 1636620946992727044, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.9549999, y: 2.975}
+  - id: Line
+    sprite: {fileID: -2281143315686402665, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 0}
+    localPosition: {x: -0.010000229, y: 4.145}
+  - id: 5
+    sprite: {fileID: -529168653636007886, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 2881136183701346563, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.5849996, y: 2.7949998}
+  - id: 10
+    sprite: {fileID: 6954214720008096618, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 2179357145182356546, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.4599996, y: 3.97}
+  - id: 4
+    sprite: {fileID: 3294145024455757318, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 1130302240179122473, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: 1.2799997, y: 3.2549999}
+  - id: 9
+    sprite: {fileID: 7391045362062858341, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 786310878075146262, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.45, y: 3.215}
+  - id: 3
+    sprite: {fileID: 3697023027554452738, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 5328053543401102864, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.8900001, y: 2.9299998}
+  - id: 2
+    sprite: {fileID: 4527532283941074552, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    sand: {fileID: 7044093947893407945, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    localPosition: {x: -1.4300001, y: 2.81}
+  levelData: {fileID: 11400000, guid: 356d8e7728dcbcd4f91728fe3832200f, type: 2}

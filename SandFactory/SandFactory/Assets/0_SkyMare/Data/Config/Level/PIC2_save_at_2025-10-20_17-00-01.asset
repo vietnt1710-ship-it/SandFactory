@@ -1,0 +1,236 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7914d3670b445cc40b4638089b2b62fd, type: 3}
+  m_Name: PIC2_save_at_2025-10-20_17-00-01
+  m_EditorClassIdentifier: 
+  painting:
+    line: {fileID: -5730901647436650973, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    linePosition: {x: 0.0049996376, y: 4.15, z: 0}
+    activeOnStart: []
+    pieceList:
+    - id: 1_base
+      neighbors:
+      - 2_base
+      - 5_base
+      - 6_base
+      _colorID: 1
+      _amount: 23
+      piecePosition: {x: 0.0049996376, y: 3.01, z: 0}
+      textPosition: {x: -1.7406722, y: -0.1592691, z: 0}
+      raw: {fileID: -495188522317766368, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -387600960691112156, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 2_base
+      neighbors:
+      - 1_base
+      - 3_base
+      - 4_base
+      - 5_base
+      - 6_base
+      _colorID: 2
+      _amount: 15
+      piecePosition: {x: 0.12999964, y: 3.28, z: 0}
+      textPosition: {x: -0.8013448, y: -0.118157625, z: 0}
+      raw: {fileID: -3040059159694368336, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 5548534775302021623, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 3_base
+      neighbors:
+      - 2_base
+      - 4_base
+      - 6_base
+      - 10_base
+      _colorID: 8
+      _amount: 9
+      piecePosition: {x: 0.3499999, y: 3.435, z: 0}
+      textPosition: {x: -0.16988245, y: 0.1034503, z: 0}
+      raw: {fileID: -5159970558369960953, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 2347387327804883154, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 4_base
+      neighbors:
+      - 2_base
+      - 3_base
+      - 5_base
+      - 7_base
+      - 9_base
+      - 10_base
+      _colorID: 3
+      _amount: 8
+      piecePosition: {x: -0.7000003, y: 3.7849998, z: 0}
+      textPosition: {x: 0.06140411, y: 0.031812668, z: 0}
+      raw: {fileID: -8662101575989515838, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -6759727538065385205, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 5_base
+      neighbors:
+      - 1_base
+      - 2_base
+      - 4_base
+      - 9_base
+      _colorID: 5
+      _amount: 2
+      piecePosition: {x: -1.7650001, y: 3.735, z: 0}
+      textPosition: {x: 0.09482443, y: -0.000058412552, z: 0}
+      raw: {fileID: 4784925821505042013, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -6334609482446671389, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 6_base
+      neighbors:
+      - 1_base
+      - 2_base
+      - 3_base
+      - 10_base
+      - 11_base
+      _colorID: 5
+      _amount: 3
+      piecePosition: {x: 1.4249997, y: 3.79, z: 0}
+      textPosition: {x: 0.37617004, y: 0.026812553, z: 0}
+      raw: {fileID: 2419057316833057843, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -7513400462875921462, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 7_base
+      neighbors:
+      - 4_base
+      - 8_base
+      - 9_base
+      - 10_base
+      - 13_base
+      - 14_base
+      - 15_base
+      - 16_base
+      _colorID: 5
+      _amount: 12
+      piecePosition: {x: -0.71500015, y: 4.88, z: 0}
+      textPosition: {x: 0.027280867, y: 0.21400642, z: 0}
+      raw: {fileID: -8043883084636302422, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 5837480073819472704, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 8_base
+      neighbors:
+      - 7_base
+      - 9_base
+      _colorID: 6
+      _amount: 3
+      piecePosition: {x: -1.1500001, y: 4.42, z: 0}
+      textPosition: {x: 0.06929839, y: 0.01903534, z: 0}
+      raw: {fileID: -529979606660900517, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -4436395433084203541, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 9_base
+      neighbors:
+      - 4_base
+      - 5_base
+      - 7_base
+      - 8_base
+      - 13_base
+      - 14_base
+      _colorID: 4
+      _amount: 7
+      piecePosition: {x: -1.7050002, y: 4.325, z: 0}
+      textPosition: {x: -0.2107892, y: -0.14795208, z: 0}
+      raw: {fileID: -1008188828785637161, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -8950940915322296374, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 10_base
+      neighbors:
+      - 3_base
+      - 4_base
+      - 6_base
+      - 7_base
+      - 11_base
+      - 12_base
+      - 15_base
+      _colorID: 4
+      _amount: 10
+      piecePosition: {x: 0.7149997, y: 4.42, z: 0}
+      textPosition: {x: -0.14190036, y: 0.035409927, z: 0}
+      raw: {fileID: -782836285619585336, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -2683849685443893412, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 11_base
+      neighbors:
+      - 6_base
+      - 10_base
+      - 12_base
+      _colorID: 4
+      _amount: 6
+      piecePosition: {x: 1.8799996, y: 4.245, z: 0}
+      textPosition: {x: 0.19953251, y: -0.05157852, z: 0}
+      raw: {fileID: 7368398123957663353, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -8472231344548689485, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 12_base
+      neighbors:
+      - 10_base
+      - 11_base
+      - 15_base
+      _colorID: 4
+      _amount: 11
+      piecePosition: {x: 1.5549998, y: 4.705, z: 0}
+      textPosition: {x: 0.115175486, y: 0.012397766, z: 0}
+      raw: {fileID: 1121585255663865873, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 730069029765141091, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 13_base
+      neighbors:
+      - 7_base
+      - 9_base
+      - 14_base
+      _colorID: 4
+      _amount: 2
+      piecePosition: {x: -1.7950001, y: 4.865, z: 0}
+      textPosition: {x: 0.059327483, y: 0.1307602, z: 0}
+      raw: {fileID: -8088737760929582037, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -8891584937379729718, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 14_base
+      neighbors:
+      - 7_base
+      - 9_base
+      - 13_base
+      - 16_base
+      _colorID: 2
+      _amount: 7
+      piecePosition: {x: -1.6450002, y: 5.335, z: 0}
+      textPosition: {x: -0.15616953, y: 0.15198803, z: 0}
+      raw: {fileID: 5335503630411457975, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: -1304944269908930869, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 15_base
+      neighbors:
+      - 7_base
+      - 10_base
+      - 12_base
+      - 16_base
+      _colorID: 2
+      _amount: 13
+      piecePosition: {x: 1.1399999, y: 5.295, z: 0}
+      textPosition: {x: 0.022573113, y: 0.011871338, z: 0}
+      raw: {fileID: 5578735895089239922, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 5597923374230452476, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+    - id: 16_base
+      neighbors:
+      - 7_base
+      - 14_base
+      - 15_base
+      _colorID: 7
+      _amount: 16
+      piecePosition: {x: -0.26999998, y: 5.455, z: 0}
+      textPosition: {x: 0.33549744, y: 0.064736366, z: 0}
+      raw: {fileID: 606032385096531233, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+      sand: {fileID: 1275705941691541861, guid: 35da8547c7795c9458da1cb713a3235e, type: 3}
+  storge:
+    storgeItems:
+    - _colorID: 1
+      storgeValue: 23
+    - _colorID: 2
+      storgeValue: 35
+    - _colorID: 8
+      storgeValue: 9
+    - _colorID: 3
+      storgeValue: 8
+    - _colorID: 5
+      storgeValue: 17
+    - _colorID: 6
+      storgeValue: 3
+    - _colorID: 4
+      storgeValue: 36
+    - _colorID: 7
+      storgeValue: 16
+  gridDataFile: {fileID: 4900000, guid: b54e55e07f438094f95fd15e54557d16, type: 3}

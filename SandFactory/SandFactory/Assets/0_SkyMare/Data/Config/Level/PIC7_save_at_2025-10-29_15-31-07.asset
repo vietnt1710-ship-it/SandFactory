@@ -1,0 +1,236 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7914d3670b445cc40b4638089b2b62fd, type: 3}
+  m_Name: PIC7_save_at_2025-10-29_15-31-07
+  m_EditorClassIdentifier: 
+  painting:
+    line: {fileID: -2281143315686402665, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+    linePosition: {x: -0.010000229, y: 4.145, z: 0}
+    activeOnStart:
+    - 16_base
+    - 2_base
+    pieceList:
+    - id: 1_base
+      neighbors:
+      - 6_base
+      - 10_base
+      _colorID: 4
+      _amount: 4
+      piecePosition: {x: -0.0800004, y: 2.74, z: 0}
+      textPosition: {x: 0.053527117, y: 0.053228855, z: 0}
+      raw: {fileID: -3572576957457782199, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 7_base
+      neighbors:
+      - 12_base
+      - 8_base
+      - 13_base
+      _colorID: 11
+      _amount: 9
+      piecePosition: {x: 2.0749998, y: 3.605, z: 0}
+      textPosition: {x: -0.44863635, y: 0.026771545, z: 0}
+      raw: {fileID: -2049870927463963782, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 16_base
+      neighbors:
+      - 8_base
+      - 4_base
+      - 9_base
+      - 2_base
+      _colorID: 3
+      _amount: 13
+      piecePosition: {x: 1.0849996, y: 5.365, z: 0}
+      textPosition: {x: -0.24915314, y: -0.069232225, z: 0}
+      raw: {fileID: 4682617804150896231, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 14_base
+      neighbors:
+      - 8_base
+      - 11_base
+      - 15_base
+      - 9_base
+      _colorID: 6
+      _amount: 6
+      piecePosition: {x: -1.6350002, y: 4.075, z: 0}
+      textPosition: {x: -0.31797767, y: 0.2195921, z: 0}
+      raw: {fileID: -8174293981574294918, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 12_base
+      neighbors:
+      - 7_base
+      - 8_base
+      - 13_base
+      - 10_base
+      _colorID: 1
+      _amount: 6
+      piecePosition: {x: 0.4249997, y: 4.335, z: 0}
+      textPosition: {x: 0.079702795, y: 0.0034799576, z: 0}
+      raw: {fileID: 1027538637952981407, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 8_base
+      neighbors:
+      - 7_base
+      - 16_base
+      - 14_base
+      - 12_base
+      - 11_base
+      - 15_base
+      - 10_base
+      - 4_base
+      - 9_base
+      _colorID: 2
+      _amount: 20
+      piecePosition: {x: -0.26999998, y: 4.31, z: 0}
+      textPosition: {x: -0.103040636, y: -0.32261705, z: 0}
+      raw: {fileID: 5110465556422944298, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 13_base
+      neighbors:
+      - 7_base
+      - 12_base
+      - 10_base
+      _colorID: 6
+      _amount: 8
+      piecePosition: {x: 1.2399998, y: 4.765, z: 0}
+      textPosition: {x: 0.076614976, y: 0.05623865, z: 0}
+      raw: {fileID: -16312275777257509, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 11_base
+      neighbors:
+      - 14_base
+      - 8_base
+      - 9_base
+      _colorID: 1
+      _amount: 3
+      piecePosition: {x: -1.1500001, y: 3.97, z: 0}
+      textPosition: {x: -0.03495276, y: -0.1362226, z: 0}
+      raw: {fileID: -5484334933194384926, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 17_base
+      neighbors:
+      - 15_base
+      _colorID: 3
+      _amount: 5
+      piecePosition: {x: -1.6100001, y: 5.505, z: 0}
+      textPosition: {x: -0.38686514, y: 0.106206894, z: 0}
+      raw: {fileID: -5018941636829427182, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 15_base
+      neighbors:
+      - 14_base
+      - 8_base
+      - 17_base
+      _colorID: 11
+      _amount: 5
+      piecePosition: {x: -1.2850003, y: 5.165, z: 0}
+      textPosition: {x: -0.62409055, y: -0.32181835, z: 0}
+      raw: {fileID: -4278175319599715855, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 6_base
+      neighbors:
+      - 1_base
+      - 5_base
+      - 10_base
+      _colorID: 4
+      _amount: 4
+      piecePosition: {x: 1.9549999, y: 2.975, z: 0}
+      textPosition: {x: -0.045909047, y: 0.13464022, z: 0}
+      raw: {fileID: 5884275775408698647, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 5_base
+      neighbors:
+      - 6_base
+      - 10_base
+      - 4_base
+      _colorID: 1
+      _amount: 3
+      piecePosition: {x: 1.5849996, y: 2.7949998, z: 0}
+      textPosition: {x: -0.0050622225, y: 0.029373407, z: 0}
+      raw: {fileID: -529168653636007886, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 10_base
+      neighbors:
+      - 1_base
+      - 12_base
+      - 8_base
+      - 13_base
+      - 6_base
+      - 5_base
+      - 4_base
+      _colorID: 11
+      _amount: 5
+      piecePosition: {x: 1.4599996, y: 3.97, z: 0}
+      textPosition: {x: 0.14188159, y: 0.19293141, z: 0}
+      raw: {fileID: 6954214720008096618, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 4_base
+      neighbors:
+      - 16_base
+      - 8_base
+      - 5_base
+      - 10_base
+      _colorID: 1
+      _amount: 7
+      piecePosition: {x: 1.2799997, y: 3.2549999, z: 0}
+      textPosition: {x: -0.051159263, y: 0.31545472, z: 0}
+      raw: {fileID: 3294145024455757318, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 9_base
+      neighbors:
+      - 16_base
+      - 14_base
+      - 8_base
+      - 11_base
+      - 3_base
+      - 2_base
+      _colorID: 11
+      _amount: 9
+      piecePosition: {x: -1.45, y: 3.215, z: 0}
+      textPosition: {x: -0.5688088, y: 0.07018781, z: 0}
+      raw: {fileID: 7391045362062858341, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 3_base
+      neighbors:
+      - 9_base
+      - 2_base
+      _colorID: 4
+      _amount: 6
+      piecePosition: {x: -1.8900001, y: 2.9299998, z: 0}
+      textPosition: {x: -0.019090772, y: -0.2153449, z: 0}
+      raw: {fileID: 3697023027554452738, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+    - id: 2_base
+      neighbors:
+      - 16_base
+      - 9_base
+      - 3_base
+      _colorID: 4
+      _amount: 3
+      piecePosition: {x: -1.4300001, y: 2.81, z: 0}
+      textPosition: {x: 0.09144211, y: -0.029513836, z: 0}
+      raw: {fileID: 4527532283941074552, guid: e5d1932131e9ade42a67d0192ef2870e, type: 3}
+      sand: {fileID: 0}
+  storge:
+    storgeItems:
+    - _colorID: 4
+      storgeValue: 17
+    - _colorID: 11
+      storgeValue: 28
+    - _colorID: 3
+      storgeValue: 18
+    - _colorID: 6
+      storgeValue: 14
+    - _colorID: 1
+      storgeValue: 19
+    - _colorID: 2
+      storgeValue: 20
+  gridDataFile: {fileID: 0}

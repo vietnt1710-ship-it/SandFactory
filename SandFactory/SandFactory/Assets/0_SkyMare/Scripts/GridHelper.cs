@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class GridParse
+{
+  
+    public static (int colorID, int sandAmount) OnSplitID(string input)
+    {
+        string[] parts = input.Split('_');
+        if (parts.Length == 2 && int.TryParse(parts[0], out int colorID) && int.TryParse(parts[1], out int sandAmount))
+        {
+            return (colorID, sandAmount);   
+        }
+
+        return (-1, -1);
+    }
+    public static List<(int colorID, int sandAmount)> OnSplitPipe(string input)
+    {
+        string[] pairs = input.Split('+');
+
+        List<(int colorID, int sandAmount)> result = new List<(int colorID, int sandAmount)>();
+
+        foreach (var pair in pairs)
+        {
+            result.Add(OnSplitID(pair));
+        }
+
+        return result;
+    }
+
+    // input dạng "a_b" -> (be, af). Không crash nếu thiếu "_"
+    public static void OnSplitBeAf(string input, out string be, out string af)
+    {
+        int idx = input.IndexOf('_');
+        if (idx < 0) { be = input; af = ""; return; }
+        be = input.Substring(0, idx);
+        af = input[(idx + 1)..];
+    }
+
+    // Lấy số sau prefix 1 ký tự, ví dụ "k3" hoặc "l12" -> 3 hoặc 12
+    public static int IdAfter1Char(string s) => int.Parse(s.Substring(1));
+
+    // Ký tự đầu là type (giữ logic cũ)
+    public static int TypeOf(string s) => int.Parse(s[0].ToString());
+}
+// Gom logic nối key–lock vào 1 chỗ, dùng Dict để tra O(1)
+class KeyLockRegistry
+{
+    readonly Dictionary<int, KeyTile> _keys = new();
+    readonly Dictionary<int, LockTile> _locks = new();
+
+    public void RegisterKey(KeyTile k)
+    {
+        _keys[k.keyID] = k;
+        if (_locks.TryGetValue(k.keyID, out var lk))
+        {
+            k.target = lk;
+            lk.target = k;
+        }
+    }
+
+    public void RegisterLock(LockTile l)
+    {
+        _locks[l.lockID] = l;
+        if (_keys.TryGetValue(l.lockID, out var ke))
+        {
+            l.target = ke;
+            ke.target = l;
+        }
+    }
+}
