@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SegmentedColoredPipe : MonoBehaviour
 {
@@ -20,22 +21,107 @@ public class SegmentedColoredPipe : MonoBehaviour
     private List<Vector3> pathNormals = new List<Vector3>();
     private List<Vector3> pathBinormals = new List<Vector3>();
 
+    private MeshFilter currentMeshFilter;
+    private float initialFrameTwist = 0f;
+
+    // Lưu số lượng điểm ban đầu để tính toán segment
+    private int initialPointCount = 0;
+
+    // === MỚI: Lưu list index của từng segment màu ===
+    [System.Serializable]
+    public class SegmentIndexRange
+    {
+        public int segmentIndex;        // Index của segment (0, 1, 2,...)
+        public Color segmentColor;      // Màu của segment
+        public int startPointIndex;     // Index điểm bắt đầu
+        public int endPointIndex;       // Index điểm kết thúc
+        public List<int> pointIndices;  // List tất cả indices của các điểm trong segment này
+
+        public SegmentIndexRange(int segIdx, Color color, int start, int end)
+        {
+            segmentIndex = segIdx;
+            segmentColor = color;
+            startPointIndex = start;
+            endPointIndex = end;
+            pointIndices = new List<int>();
+
+            // Tạo list indices từ start đến end
+            for (int i = start; i <= end; i++)
+            {
+                pointIndices.Add(i);
+            }
+        }
+    }
+
+    // List lưu trữ thông tin index của từng segment
+    public List<SegmentIndexRange> segmentIndexRanges = new List<SegmentIndexRange>();
+    // === KẾT THÚC PHẦN MỚI ===
+
     void Start()
     {
-        GenerateSegmentedPipe();
+        //GenerateSegmentedPipe();
+    }
+
+    bool isMoving = false;
+    void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    if (isMoving) return;
+        //    RemoveVertextList();
+        //}
+    }
+    public void RemoveVertextList(int count = 1)
+    {
+        isMoving = true;
+
+        int countRemove = 0;
+        
+        for(int i = 0; i < count; i++)
+        {
+            var lastSegment = segmentIndexRanges[^1];
+            segmentIndexRanges.Remove(lastSegment);
+            countRemove += lastSegment.pointIndices.Count;
+        } 
+
+     
+
+        float duration = 0.3f * count;
+        float eachDuration = duration / countRemove;
+
+        // Tạo sequence
+        Sequence seq = DOTween.Sequence();
+
+        for (int i = 0; i < countRemove; i++)
+        {
+            // Chèn vào sequence: delay rồi gọi Moving()
+            seq.AppendInterval(eachDuration)
+               .AppendCallback(() =>
+               {
+                   Moving(); // gọi mỗi lần
+               });
+        }
+
+        // Khi tất cả duration hoàn tất
+        seq.OnComplete(() =>
+        {
+            isMoving = false;
+        });
+
     }
 
     void OnValidate()
     {
         if (Application.isPlaying && roundedPolylinePipe != null)
         {
-            GenerateSegmentedPipe();
+            //GenerateSegmentedPipe();
         }
     }
 
     [ContextMenu("Generate Segmented Pipe")]
-    public void GenerateSegmentedPipe()
+    public void GenerateSegmentedPipe(List<Color> segmentColors)
     {
+        this.segmentColors = new List<Color>(segmentColors);
         ClearSegments();
 
         if (roundedPolylinePipe == null)
@@ -58,9 +144,73 @@ public class SegmentedColoredPipe : MonoBehaviour
             return;
         }
 
+        // Lưu số lượng điểm ban đầu
+        initialPointCount = pathPoints.Count;
+
+        // === MỚI: Tính toán và lưu index ranges cho từng segment ===
+        CalculateSegmentIndexRanges();
+        // === KẾT THÚC PHẦN MỚI ===
+
         CalculateRotationMinimizingFrames();
         CreateSegmentedPipeMesh();
     }
+
+    // === MỚI: Phương thức tính toán index ranges ===
+    void CalculateSegmentIndexRanges()
+    {
+        segmentIndexRanges.Clear();
+
+        float pointsPerSegment = (float)initialPointCount / segmentColors.Count;
+
+        for (int segIdx = 0; segIdx < segmentColors.Count; segIdx++)
+        {
+            int startIdx = Mathf.RoundToInt(segIdx * pointsPerSegment);
+            int endIdx = Mathf.RoundToInt((segIdx + 1) * pointsPerSegment) - 1;
+
+            // Đảm bảo segment cuối cùng bao gồm tất cả điểm còn lại
+            if (segIdx == segmentColors.Count - 1)
+            {
+                endIdx = initialPointCount - 1;
+            }
+
+            SegmentIndexRange range = new SegmentIndexRange(
+                segIdx,
+                segmentColors[segIdx],
+                startIdx,
+                endIdx
+            );
+
+            segmentIndexRanges.Add(range);
+
+            Debug.Log($"Segment {segIdx} (Color: {segmentColors[segIdx]}): Points {startIdx} to {endIdx} ({range.pointIndices.Count} points)");
+        }
+    }
+
+    // Phương thức helper để lấy segment index từ point index
+    public int GetSegmentIndexFromPointIndex(int pointIndex)
+    {
+        for (int i = 0; i < segmentIndexRanges.Count; i++)
+        {
+            if (pointIndex >= segmentIndexRanges[i].startPointIndex &&
+                pointIndex <= segmentIndexRanges[i].endPointIndex)
+            {
+                return i;
+            }
+        }
+        return -1; // Không tìm thấy
+    }
+
+    // Phương thức helper để lấy màu từ point index
+    public Color GetColorFromPointIndex(int pointIndex)
+    {
+        int segIdx = GetSegmentIndexFromPointIndex(pointIndex);
+        if (segIdx >= 0 && segIdx < segmentIndexRanges.Count)
+        {
+            return segmentIndexRanges[segIdx].segmentColor;
+        }
+        return Color.white;
+    }
+    // === KẾT THÚC PHẦN MỚI ===
 
     void GetPathFromRoundedPolyline()
     {
@@ -72,8 +222,8 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         if (pathPointsField != null && pathTangentsField != null)
         {
-            pathPoints = (List<Vector3>)pathPointsField.GetValue(roundedPolylinePipe);
-            pathTangents = (List<Vector3>)pathTangentsField.GetValue(roundedPolylinePipe);
+            pathPoints = new List<Vector3>((List<Vector3>)pathPointsField.GetValue(roundedPolylinePipe));
+            pathTangents = new List<Vector3>((List<Vector3>)pathTangentsField.GetValue(roundedPolylinePipe));
         }
         else
         {
@@ -94,11 +244,12 @@ public class SegmentedColoredPipe : MonoBehaviour
             }
         }
         segmentObjects.Clear();
+        currentMeshFilter = null;
+        segmentIndexRanges.Clear(); // Xóa luôn index ranges
     }
 
     void CreateSegmentedPipeMesh()
     {
-        // Tạo một mesh duy nhất cho cả đường ống
         GameObject pipeObject = new GameObject("ColoredPipe");
         pipeObject.transform.SetParent(transform);
         pipeObject.transform.localPosition = Vector3.zero;
@@ -108,8 +259,8 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         Mesh pipeMesh = CreateCurvedPipeMesh();
         meshFilter.mesh = pipeMesh;
+        currentMeshFilter = meshFilter;
 
-        // Tạo materials cho từng segment
         Material[] materials = new Material[segmentColors.Count];
         for (int i = 0; i < segmentColors.Count; i++)
         {
@@ -119,6 +270,125 @@ public class SegmentedColoredPipe : MonoBehaviour
         meshRenderer.materials = materials;
 
         segmentObjects.Add(pipeObject);
+    }
+
+    void Moving()
+    {
+        if (pathPoints.Count < 3) return;
+
+        float distance = Vector3.Distance(pathPoints[0], pathPoints[1]);
+        Vector3 saving = Vector3.zero;
+
+        // Di chuyển các điểm theo thuật toán của bạn
+        for (int i = pathPoints.Count - 1; i >= 0; i--)
+        {
+            var temp = pathPoints[i];
+            if (i == pathPoints.Count - 1)
+            {
+                pathPoints[i] -= new Vector3(0, distance, 0);
+            }
+            else
+            {
+                pathPoints[i] = saving;
+            }
+            saving = temp;
+        }
+
+        // Cắt bỏ điểm cuối cùng
+        pathPoints.RemoveAt(pathPoints.Count - 1);
+        pathTangents.RemoveAt(pathTangents.Count - 1);
+
+        if (pathNormals.Count > 0)
+            pathNormals.RemoveAt(pathNormals.Count - 1);
+        if (pathBinormals.Count > 0)
+            pathBinormals.RemoveAt(pathBinormals.Count - 1);
+
+        // === MỚI: Cập nhật segment index ranges sau khi xóa điểm ===
+        //UpdateSegmentIndexRangesAfterRemoval();
+        // === KẾT THÚC PHẦN MỚI ===
+
+        // Cập nhật mesh
+        UpdatePipeMesh();
+    }
+
+    // === MỚI: Cập nhật index ranges sau khi xóa điểm cuối ===
+    void UpdateSegmentIndexRangesAfterRemoval()
+    {
+        // Giảm tất cả end indices xuống 1
+        for (int i = 0; i < segmentIndexRanges.Count; i++)
+        {
+            segmentIndexRanges[i].endPointIndex--;
+
+            // Cập nhật lại list pointIndices
+            segmentIndexRanges[i].pointIndices.Clear();
+            for (int j = segmentIndexRanges[i].startPointIndex; j <= segmentIndexRanges[i].endPointIndex; j++)
+            {
+                segmentIndexRanges[i].pointIndices.Add(j);
+            }
+        }
+    }
+    // === KẾT THÚC PHẦN MỚI ===
+
+    void RecalculateTangents()
+    {
+        pathTangents.Clear();
+
+        for (int i = 0; i < pathPoints.Count; i++)
+        {
+            Vector3 tangent;
+
+            if (i == 0)
+            {
+                tangent = (pathPoints[i + 1] - pathPoints[i]).normalized;
+            }
+            else if (i == pathPoints.Count - 1)
+            {
+                tangent = (pathPoints[i] - pathPoints[i - 1]).normalized;
+            }
+            else
+            {
+                Vector3 tangent1 = (pathPoints[i] - pathPoints[i - 1]).normalized;
+                Vector3 tangent2 = (pathPoints[i + 1] - pathPoints[i]).normalized;
+                tangent = (tangent1 + tangent2).normalized;
+            }
+
+            pathTangents.Add(tangent);
+        }
+    }
+
+    void UpdatePipeMesh()
+    {
+        if (currentMeshFilter == null)
+        {
+            Debug.LogWarning("No mesh filter to update!");
+            return;
+        }
+
+        if (pathNormals.Count > 0 && pathTangents.Count > 0)
+        {
+            Vector3 oldNormal = pathNormals[0];
+            Vector3 oldTangent = pathTangents[0];
+
+            RecalculateTangents();
+
+            Vector3 newTangent = pathTangents[0];
+            Vector3 reference = Mathf.Abs(Vector3.Dot(newTangent, Vector3.up)) > 0.9f ? Vector3.forward : Vector3.up;
+            Vector3 newBinormal = Vector3.Cross(newTangent, reference).normalized;
+            Vector3 newNormal = Vector3.Cross(newBinormal, newTangent).normalized;
+
+            Vector3 projectedOldNormal = (oldNormal - Vector3.Dot(oldNormal, newTangent) * newTangent).normalized;
+            float angle = Mathf.Atan2(Vector3.Dot(Vector3.Cross(newNormal, projectedOldNormal), newTangent),
+                                       Vector3.Dot(newNormal, projectedOldNormal));
+            initialFrameTwist = angle;
+        }
+        else
+        {
+            RecalculateTangents();
+        }
+
+        CalculateRotationMinimizingFrames();
+        Mesh updatedMesh = CreateCurvedPipeMesh();
+        currentMeshFilter.mesh = updatedMesh;
     }
 
     Mesh CreateCurvedPipeMesh()
@@ -135,13 +405,8 @@ public class SegmentedColoredPipe : MonoBehaviour
         List<Vector2> uvs = new List<Vector2>();
         List<Vector3> normals = new List<Vector3>();
 
-        // Tính toán độ dài từng đoạn
-        float totalLength = CalculatePathLength();
-        float segmentLength = totalLength / segmentColors.Count;
-
-        // Tạo vòng tròn vertices cho mỗi điểm trên path
-        float accumulatedLength = 0f;
-        int currentSegmentIndex = 0;
+        // Tính segment dựa trên số điểm ban đầu, không phải số điểm hiện tại
+        float pointsPerSegment = (float)initialPointCount / segmentColors.Count;
 
         for (int i = 0; i < pathPoints.Count; i++)
         {
@@ -150,16 +415,12 @@ public class SegmentedColoredPipe : MonoBehaviour
             Vector3 normal = pathNormals[i];
             Vector3 binormal = pathBinormals[i];
 
-            // Xác định segment hiện tại dựa trên độ dài tích lũy
-            if (i > 0)
-            {
-                accumulatedLength += Vector3.Distance(pathPoints[i - 1], pathPoints[i]);
-                currentSegmentIndex = Mathf.Min((int)(accumulatedLength / segmentLength), segmentColors.Count - 1);
-            }
+            // Tính segment index dựa trên vị trí trong mảng ban đầu
+            // Điểm ở đầu mảng thuộc segment đầu tiên
+            int currentSegmentIndex = Mathf.Min((int)(i / pointsPerSegment), segmentColors.Count - 1);
 
             int circleStartIndex = vertices.Count;
 
-            // Tạo vòng tròn vertices
             for (int j = 0; j < radialSegments; j++)
             {
                 float angle = j / (float)radialSegments * Mathf.PI * 2f;
@@ -178,7 +439,6 @@ public class SegmentedColoredPipe : MonoBehaviour
                 uvs.Add(new Vector2(u, v));
             }
 
-            // Tạo triangles nối với vòng tròn trước đó
             if (i > 0)
             {
                 int prevCircleStart = circleStartIndex - radialSegments;
@@ -190,10 +450,8 @@ public class SegmentedColoredPipe : MonoBehaviour
                     int prevCurrent = prevCircleStart + j;
                     int prevNext = prevCircleStart + (j + 1) % radialSegments;
 
-                    // Xác định segment cho cặp quad này
                     int quadSegmentIndex = currentSegmentIndex;
 
-                    // Thêm triangles vào segment tương ứng (đảo ngược để normal hướng ra ngoài)
                     trianglesPerSegment[quadSegmentIndex].Add(prevCurrent);
                     trianglesPerSegment[quadSegmentIndex].Add(next);
                     trianglesPerSegment[quadSegmentIndex].Add(current);
@@ -205,20 +463,18 @@ public class SegmentedColoredPipe : MonoBehaviour
             }
         }
 
-        // Tạo end caps
         CreateStartCap(vertices, trianglesPerSegment[0], normals, uvs, pathPoints[0],
                       pathTangents[0], pathNormals[0], pathBinormals[0]);
 
-        CreateEndCap(vertices, trianglesPerSegment[segmentColors.Count - 1], normals, uvs,
+        int lastSegmentIndex = Mathf.Min((int)((pathPoints.Count - 1) / pointsPerSegment), segmentColors.Count - 1);
+        CreateEndCap(vertices, trianglesPerSegment[lastSegmentIndex], normals, uvs,
                     pathPoints[pathPoints.Count - 1], pathTangents[pathPoints.Count - 1],
                     pathNormals[pathPoints.Count - 1], pathBinormals[pathPoints.Count - 1]);
 
-        // Gán vertices và normals
         mesh.vertices = vertices.ToArray();
         mesh.normals = normals.ToArray();
         mesh.uv = uvs.ToArray();
 
-        // Gán submeshes cho từng segment
         mesh.subMeshCount = segmentColors.Count;
         for (int i = 0; i < segmentColors.Count; i++)
         {
@@ -320,23 +576,27 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         if (pathPoints.Count == 0) return;
 
-        // Frame ban đầu
         Vector3 tangent0 = pathTangents[0];
         Vector3 reference = Mathf.Abs(Vector3.Dot(tangent0, Vector3.up)) > 0.9f ? Vector3.forward : Vector3.up;
         Vector3 binormal0 = Vector3.Cross(tangent0, reference).normalized;
         Vector3 normal0 = Vector3.Cross(binormal0, tangent0).normalized;
 
+        if (initialFrameTwist != 0f)
+        {
+            Quaternion twistRotation = Quaternion.AngleAxis(initialFrameTwist * Mathf.Rad2Deg, tangent0);
+            normal0 = twistRotation * normal0;
+            binormal0 = twistRotation * binormal0;
+        }
+
         pathNormals.Add(normal0);
         pathBinormals.Add(binormal0);
 
-        // Tính toán frame cho các điểm còn lại
         for (int i = 1; i < pathPoints.Count; i++)
         {
             Vector3 prevNormal = pathNormals[i - 1];
             Vector3 prevTangent = pathTangents[i - 1];
             Vector3 currTangent = pathTangents[i];
 
-            // Nếu tangent gần như không đổi, giữ nguyên frame
             if (Vector3.Dot(prevTangent, currTangent) > 0.9999f)
             {
                 pathNormals.Add(prevNormal);
@@ -344,7 +604,6 @@ public class SegmentedColoredPipe : MonoBehaviour
                 continue;
             }
 
-            // Rotation Minimizing Frame algorithm
             Vector3 v1 = pathPoints[i] - pathPoints[i - 1];
             float c1 = 2.0f / Vector3.Dot(v1, v1);
             Vector3 rL = prevNormal - c1 * Vector3.Dot(v1, prevNormal) * v1;
@@ -365,4 +624,23 @@ public class SegmentedColoredPipe : MonoBehaviour
     {
         ClearSegments();
     }
+
+    // === MỚI: Debug method để in ra thông tin segment ===
+    [ContextMenu("Print Segment Info")]
+    public void PrintSegmentInfo()
+    {
+        Debug.Log($"=== SEGMENT INDEX INFORMATION ===");
+        Debug.Log($"Total Segments: {segmentIndexRanges.Count}");
+        Debug.Log($"Current Points: {pathPoints.Count}");
+        Debug.Log($"Initial Points: {initialPointCount}");
+
+        for (int i = 0; i < segmentIndexRanges.Count; i++)
+        {
+            var range = segmentIndexRanges[i];
+            Debug.Log($"Segment {range.segmentIndex}: Color={range.segmentColor}, " +
+                     $"Range=[{range.startPointIndex}-{range.endPointIndex}], " +
+                     $"Total Points={range.pointIndices.Count}");
+        }
+    }
+    // === KẾT THÚC PHẦN MỚI ===
 }

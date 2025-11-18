@@ -26,6 +26,7 @@ public class Tube : MonoBehaviour
 
     public MeshRenderer waterDrop;
 
+    public SegmentedColoredPipe segmentedColoredPipe;
     public void Start()
     {
         GeneratePassenger();
@@ -67,29 +68,30 @@ public class Tube : MonoBehaviour
         float duration = this.duration * 0.7f;
         Sequence mainSeq = DOTween.Sequence();
         isPouring = true;
+        segmentedColoredPipe.RemoveVertextList(count);
 
         for (int i = 0; i < count; i++)
         {
             passengerIndexs.RemoveAt(0);
-            MeshRenderer liquid = liquids[0];
-            liquids.RemoveAt(0);
+            //MeshRenderer liquid = liquids[0];
+            //liquids.RemoveAt(0);
 
-            float targetY = liquid.gameObject.transform.position.y;
-            targetY -= stepY * i;
-            mainSeq.Join(liquid.transform.DOMoveY(targetY, duration * i).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                float valueA = liquid.material.GetFloat("_Fill");
-                float targetA = 0;
+            //float targetY = liquid.gameObject.transform.position.y;
+            //targetY -= stepY * i;
+            //mainSeq.Join(liquid.transform.DOMoveY(targetY, duration * i).SetEase(Ease.Linear).OnComplete(() =>
+            //{
+            //    float valueA = liquid.material.GetFloat("_Fill");
+            //    float targetA = 0;
 
-                DOTween.To(() => valueA, x => valueA = x, targetA, duration)
-                  .SetEase(Ease.Linear).OnUpdate(() => liquid.material.SetFloat("_Fill", valueA));
-            }));
+            //    DOTween.To(() => valueA, x => valueA = x, targetA, duration)
+            //      .SetEase(Ease.Linear).OnUpdate(() => liquid.material.SetFloat("_Fill", valueA));
+            //}));
         }
         for (int i = 0; i < liquids.Count; i++)
         {
-            float targetY = liquids[i].gameObject.transform.position.y;
-            targetY -= stepY * count;
-            mainSeq.Join(liquids[i].transform.DOMoveY(targetY , duration * count).SetEase(Ease.Linear));
+            //float targetY = liquids[i].gameObject.transform.position.y;
+            //targetY -= stepY * count;
+            //mainSeq.Join(liquids[i].transform.DOMoveY(targetY, duration * count).SetEase(Ease.Linear));
         }
         DOVirtual.DelayedCall(duration * count, () =>
         {
@@ -137,19 +139,22 @@ public class Tube : MonoBehaviour
   
     public void GeneratePassenger()
     {
-        for (int i = 0; i < passengerIndexs.Count; i++)
+        List<Color> cls = new List<Color>();
+        for (int i = passengerIndexs.Count -1 ; i >= 0; i--)
         {
-            var go_Li = Instantiate(liquid);
-            go_Li.transform.SetParent(transform, false);
-            go_Li.transform.localPosition = new Vector3(0, startY + ( (i+1) * stepY), 0);
-            ChangeColor(colors.colorWithIDs[passengerIndexs[i] -1], go_Li.material);
-            go_Li.gameObject.SetActive(true);
-            liquids.Add(go_Li);
+            cls.Add(colors.colorWithIDs[passengerIndexs[i] - 1].liquidColor);
+            //var go_Li = Instantiate(liquid);
+            //go_Li.transform.SetParent(transform, false);
+            //go_Li.transform.localPosition = new Vector3(0, startY + ( (i+1) * stepY), 0);
+            //ChangeColor(colors.colorWithIDs[passengerIndexs[i] -1], go_Li.material);
+            //go_Li.gameObject.SetActive(true);
+            //liquids.Add(go_Li);
 
-            if (i < passengerIndexs.Count - 1 )
-                if (passengerIndexs[i] == passengerIndexs[i + 1])
-                    go_Li.material.SetFloat("_Fill", 0.45f);
+            //if (i < passengerIndexs.Count - 1 )
+            //    if (passengerIndexs[i] == passengerIndexs[i + 1])
+            //        go_Li.material.SetFloat("_Fill", 0.45f);
         }
+        segmentedColoredPipe.GenerateSegmentedPipe(cls);
     }
     public void ChangeColor(ColorWithID color, Material liquid)
     {
