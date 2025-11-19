@@ -68,7 +68,7 @@ public class Tube : MonoBehaviour
         float duration = this.duration * 0.7f;
         Sequence mainSeq = DOTween.Sequence();
         isPouring = true;
-        segmentedColoredPipe.RemoveVertextList(count);
+        segmentedColoredPipe.RemoveVertextList(duration, count);
 
         for (int i = 0; i < count; i++)
         {

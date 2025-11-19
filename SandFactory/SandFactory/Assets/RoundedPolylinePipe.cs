@@ -496,17 +496,7 @@ public class RoundedPolylinePipe : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //if (pathPoints == null || pathPoints.Count == 0) return;
 
-        //Gizmos.color = Color.yellow;
-
-        //for (int i = 0; i < pathPoints.Count; i++)
-        //{
-        //    Gizmos.DrawSphere(pathPoints[i], 0.01f);
-
-        //    if (i < pathPoints.Count - 1)
-        //        Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
-        //}
 
         if (controlPoints == null || controlPoints.Length < 2)
             return;
@@ -514,6 +504,18 @@ public class RoundedPolylinePipe : MonoBehaviour
         // Vẽ control points
         if (showControlPoints)
         {
+            if (pathPoints == null || pathPoints.Count == 0) return;
+
+            Gizmos.color = Color.yellow;
+
+            for (int i = 0; i < pathPoints.Count; i++)
+            {
+                Gizmos.DrawSphere(pathPoints[i], 0.01f);
+
+                if (i < pathPoints.Count - 1)
+                    Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
+            }
+
             Gizmos.color = Color.yellow;
             for (int i = 0; i < controlPoints.Length; i++)
             {

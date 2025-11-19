@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,24 +32,12 @@ public class SegmentedColoredPipe : MonoBehaviour
     [System.Serializable]
     public class SegmentIndexRange
     {
-        public int segmentIndex;        // Index của segment (0, 1, 2,...)
-        public Color segmentColor;      // Màu của segment
-        public int startPointIndex;     // Index điểm bắt đầu
-        public int endPointIndex;       // Index điểm kết thúc
-        public List<int> pointIndices;  // List tất cả indices của các điểm trong segment này
-
-        public SegmentIndexRange(int segIdx, Color color, int start, int end)
+        public int totalPoints;
+        public SegmentIndexRange( int start, int end)
         {
-            segmentIndex = segIdx;
-            segmentColor = color;
-            startPointIndex = start;
-            endPointIndex = end;
-            pointIndices = new List<int>();
-
-            // Tạo list indices từ start đến end
             for (int i = start; i <= end; i++)
             {
-                pointIndices.Add(i);
+                this.totalPoints++;
             }
         }
     }
@@ -71,7 +60,7 @@ public class SegmentedColoredPipe : MonoBehaviour
         //    RemoveVertextList();
         //}
     }
-    public void RemoveVertextList(int count = 1)
+    public void RemoveVertextList(float time ,int count = 1)
     {
         isMoving = true;
 
@@ -81,12 +70,12 @@ public class SegmentedColoredPipe : MonoBehaviour
         {
             var lastSegment = segmentIndexRanges[^1];
             segmentIndexRanges.Remove(lastSegment);
-            countRemove += lastSegment.pointIndices.Count;
+            countRemove += lastSegment.totalPoints;
         } 
 
      
 
-        float duration = 0.3f * count;
+        float duration = time * count;
         float eachDuration = duration / countRemove;
 
         // Tạo sequence
@@ -98,7 +87,7 @@ public class SegmentedColoredPipe : MonoBehaviour
             seq.AppendInterval(eachDuration)
                .AppendCallback(() =>
                {
-                   Moving(); // gọi mỗi lần
+                   Moving(eachDuration); // gọi mỗi lần
                });
         }
 
@@ -174,42 +163,17 @@ public class SegmentedColoredPipe : MonoBehaviour
             }
 
             SegmentIndexRange range = new SegmentIndexRange(
-                segIdx,
-                segmentColors[segIdx],
                 startIdx,
                 endIdx
             );
 
             segmentIndexRanges.Add(range);
 
-            Debug.Log($"Segment {segIdx} (Color: {segmentColors[segIdx]}): Points {startIdx} to {endIdx} ({range.pointIndices.Count} points)");
+            Debug.Log($"Segment {segIdx} (Color: {segmentColors[segIdx]}): Points {startIdx} to {endIdx} ({range.totalPoints} points)");
         }
     }
 
-    // Phương thức helper để lấy segment index từ point index
-    public int GetSegmentIndexFromPointIndex(int pointIndex)
-    {
-        for (int i = 0; i < segmentIndexRanges.Count; i++)
-        {
-            if (pointIndex >= segmentIndexRanges[i].startPointIndex &&
-                pointIndex <= segmentIndexRanges[i].endPointIndex)
-            {
-                return i;
-            }
-        }
-        return -1; // Không tìm thấy
-    }
 
-    // Phương thức helper để lấy màu từ point index
-    public Color GetColorFromPointIndex(int pointIndex)
-    {
-        int segIdx = GetSegmentIndexFromPointIndex(pointIndex);
-        if (segIdx >= 0 && segIdx < segmentIndexRanges.Count)
-        {
-            return segmentIndexRanges[segIdx].segmentColor;
-        }
-        return Color.white;
-    }
     // === KẾT THÚC PHẦN MỚI ===
 
     void GetPathFromRoundedPolyline()
@@ -272,7 +236,7 @@ public class SegmentedColoredPipe : MonoBehaviour
         segmentObjects.Add(pipeObject);
     }
 
-    void Moving()
+    void Moving(float duration)
     {
         if (pathPoints.Count < 3) return;
 
@@ -303,31 +267,12 @@ public class SegmentedColoredPipe : MonoBehaviour
         if (pathBinormals.Count > 0)
             pathBinormals.RemoveAt(pathBinormals.Count - 1);
 
-        // === MỚI: Cập nhật segment index ranges sau khi xóa điểm ===
-        //UpdateSegmentIndexRangesAfterRemoval();
-        // === KẾT THÚC PHẦN MỚI ===
-
         // Cập nhật mesh
         UpdatePipeMesh();
-    }
 
-    // === MỚI: Cập nhật index ranges sau khi xóa điểm cuối ===
-    void UpdateSegmentIndexRangesAfterRemoval()
-    {
-        // Giảm tất cả end indices xuống 1
-        for (int i = 0; i < segmentIndexRanges.Count; i++)
-        {
-            segmentIndexRanges[i].endPointIndex--;
-
-            // Cập nhật lại list pointIndices
-            segmentIndexRanges[i].pointIndices.Clear();
-            for (int j = segmentIndexRanges[i].startPointIndex; j <= segmentIndexRanges[i].endPointIndex; j++)
-            {
-                segmentIndexRanges[i].pointIndices.Add(j);
-            }
-        }
     }
-    // === KẾT THÚC PHẦN MỚI ===
+    
+
 
     void RecalculateTangents()
     {
@@ -466,10 +411,10 @@ public class SegmentedColoredPipe : MonoBehaviour
         CreateStartCap(vertices, trianglesPerSegment[0], normals, uvs, pathPoints[0],
                       pathTangents[0], pathNormals[0], pathBinormals[0]);
 
-        int lastSegmentIndex = Mathf.Min((int)((pathPoints.Count - 1) / pointsPerSegment), segmentColors.Count - 1);
-        CreateEndCap(vertices, trianglesPerSegment[lastSegmentIndex], normals, uvs,
-                    pathPoints[pathPoints.Count - 1], pathTangents[pathPoints.Count - 1],
-                    pathNormals[pathPoints.Count - 1], pathBinormals[pathPoints.Count - 1]);
+        //int lastSegmentIndex = Mathf.Min((int)((pathPoints.Count - 1) / pointsPerSegment), segmentColors.Count - 1);
+        //CreateEndCap(vertices, trianglesPerSegment[lastSegmentIndex], normals, uvs,
+        //            pathPoints[pathPoints.Count - 1], pathTangents[pathPoints.Count - 1],
+        //            pathNormals[pathPoints.Count - 1], pathBinormals[pathPoints.Count - 1]);
 
         mesh.vertices = vertices.ToArray();
         mesh.normals = normals.ToArray();
@@ -625,22 +570,4 @@ public class SegmentedColoredPipe : MonoBehaviour
         ClearSegments();
     }
 
-    // === MỚI: Debug method để in ra thông tin segment ===
-    [ContextMenu("Print Segment Info")]
-    public void PrintSegmentInfo()
-    {
-        Debug.Log($"=== SEGMENT INDEX INFORMATION ===");
-        Debug.Log($"Total Segments: {segmentIndexRanges.Count}");
-        Debug.Log($"Current Points: {pathPoints.Count}");
-        Debug.Log($"Initial Points: {initialPointCount}");
-
-        for (int i = 0; i < segmentIndexRanges.Count; i++)
-        {
-            var range = segmentIndexRanges[i];
-            Debug.Log($"Segment {range.segmentIndex}: Color={range.segmentColor}, " +
-                     $"Range=[{range.startPointIndex}-{range.endPointIndex}], " +
-                     $"Total Points={range.pointIndices.Count}");
-        }
-    }
-    // === KẾT THÚC PHẦN MỚI ===
 }
