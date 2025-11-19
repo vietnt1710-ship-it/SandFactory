@@ -19,7 +19,7 @@ public class Tube : MonoBehaviour
     public MeshRenderer liquid;
     public ColorID colors;
 
-    private List<int> passengerIndexs = new List<int>() {9,4,4,9,4,4,9,6,4,4,5,5,6,6,7,7,5,4,3,2};
+    private List<int> passengerIndexs = new List<int>() { 9, 5, 6, 4, 10, 2, 5, 9, 3, 6, 5, 4, 9, 2, 10, 5, 3, 9, 4, 6, 5, 10, 9, 5, 6, 3, 4, 9, 5, 10, 9, 6, 10 };
     public List<MeshRenderer> liquids = new List<MeshRenderer>();
 
     public Transform pouringPosition;
