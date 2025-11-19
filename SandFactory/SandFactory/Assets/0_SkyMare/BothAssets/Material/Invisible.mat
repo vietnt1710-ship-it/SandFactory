@@ -125,8 +125,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.003921569, g: 0.043137256, b: 0.14509805, a: 1}
-    - _Color: {r: 0.003921569, g: 0.043137237, b: 0.145098, a: 1}
+    - _BaseColor: {r: 0.5882353, g: 0.5803922, b: 0.77647066, a: 1}
+    - _Color: {r: 0.5882353, g: 0.5803921, b: 0.77647066, a: 1}
     - _ColorShadow: {r: 0.09999997, g: 0.19999996, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GravityDir: {r: 0, g: -1, b: 0, a: 0}

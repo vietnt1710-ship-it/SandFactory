@@ -258,14 +258,18 @@ public class MazeGenerate : MonoBehaviour
     }
     public void CombineWall()
     {
-        DOVirtual.DelayedCall(0.04f, () =>
-        {
-            wallCombine.CombineNow();
+        wallCombine.CombineNow();
 
-            walls.Clear();
-            walls.TrimExcess();
+        walls.Clear();
+        walls.TrimExcess();
+        //DOVirtual.DelayedCall(0.04f, () =>
+        //{
+        //    wallCombine.CombineNow();
 
-        });
+        //    walls.Clear();
+        //    walls.TrimExcess();
+
+        //});
     }
    
 

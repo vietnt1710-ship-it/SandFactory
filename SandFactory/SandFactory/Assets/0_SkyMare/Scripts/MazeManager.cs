@@ -49,16 +49,16 @@ public class MazeManager : Singleton<MazeManager>
         int rows = grid.GetLength(0);
         int cols = grid.GetLength(1);
 
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                if (grid[i, j].status != Tile.CellStatus.wall)
-                {
-                    CheckCorner(i, j);
-                }
-            }
-        }
+        //for (int i = 0; i < rows; i++)
+        //{
+        //    for (int j = 0; j < cols; j++)
+        //    {
+        //        if (grid[i, j].status != Tile.CellStatus.wall)
+        //        {
+        //            CheckCorner(i, j);
+        //        }
+        //    }
+        //}
         CombineAllCornersToWallCombine();
     }
     void CombineAllCornersToWallCombine()
