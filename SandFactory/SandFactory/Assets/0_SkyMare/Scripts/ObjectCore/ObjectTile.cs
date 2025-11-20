@@ -6,7 +6,7 @@ using UnityEngine;
 
 public abstract class ObjectTile : Tile
 {
-    public Vector3 jarPos = new Vector3(0, -0.5f, -0.0039999485f);
+    public Vector3 jarPos = new Vector3(0, -0.49999994f, 0.0829999447f);
      public SandJar jar;
      public int colorID;
      public int sandAmount;
