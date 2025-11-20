@@ -31,7 +31,7 @@ public class Slot : MonoBehaviour
 
            // Đặt color của base thành color của màu
             var color = sandBox.color.color;
-            color.a = 0.5f;
+            color.a = 0.75f;
             visualHolder.material.SetColor("_Color", color);
         };
 
