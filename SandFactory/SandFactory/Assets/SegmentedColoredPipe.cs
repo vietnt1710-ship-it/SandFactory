@@ -215,6 +215,7 @@ public class SegmentedColoredPipe : MonoBehaviour
     void CreateSegmentedPipeMesh()
     {
         GameObject pipeObject = new GameObject("ColoredPipe");
+        pipeObject.layer = LayerMask.NameToLayer("Tile");
         pipeObject.transform.SetParent(transform);
         pipeObject.transform.localPosition = Vector3.zero;
 

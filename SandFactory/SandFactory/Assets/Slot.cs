@@ -11,7 +11,11 @@ public class Slot : MonoBehaviour
 
     public MeshRenderer visualHolder;
 
-    public SlotProgress progress;
+    private SlotProgress progress;
+    private void Start()
+    {
+        progress = GetComponentInChildren<SlotProgress>();
+    }
 
     public SandJar jar;
     public bool isReady;
