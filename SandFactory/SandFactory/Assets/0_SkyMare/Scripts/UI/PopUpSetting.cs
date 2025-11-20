@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,44 @@ public class PopUpSetting : PopUp
     [Header("Button Ingame")]
     public Button btn_Home;
     public Button btn_Replay;
+    public GridLayoutGroup grid;
+    public override void Show()
+    {
+        if (bg != null)
+        {
+            bg.gameObject.SetActive(true);
+        }
 
+        this.gameObject.SetActive(true);
+
+        TweenSpacing(-100, 50);
+    }
+    public override void Close()
+    {
+        TweenSpacing(50, -100);
+        DOVirtual.DelayedCall(tweenDuration, () =>
+        {
+            if (bg != null)
+            {
+                bg.gameObject.SetActive(false);
+            }
+
+            this.gameObject.SetActive(false);
+        });
+    }
+    void TweenSpacing(float from, float to)
+    {
+        Vector2 spacing = grid.spacing;
+        spacing.y = from;
+        grid.spacing = spacing;
+
+        DOTween.To(
+            () => grid.spacing,
+            v => grid.spacing = v,
+            new Vector2(grid.spacing.x, to),
+           tweenDuration
+        ).SetEase(Ease.OutQuad);
+    }
     public void MiniSub()
     {
         UIManager.I.eventManager.Subscribe(event_OpenGame, OpenIngameButton);

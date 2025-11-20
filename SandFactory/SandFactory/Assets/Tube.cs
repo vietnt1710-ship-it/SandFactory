@@ -19,7 +19,7 @@ public class Tube : MonoBehaviour
     public MeshRenderer liquid;
     public ColorID colors;
 
-    private List<int> passengerIndexs = new List<int>() { 9, 5, 6, 4, 10, 2, 5, 9, 3, 6, 5, 4, 9, 2, 10, 5, 3, 9, 4, 6, 5, 10, 9, 5, 6, 3, 4, 9, 5, 10, 9, 6, 10 };
+    private List<int> passengerIndexs = new List<int>() { 9, 4, 4, 9, 4, 4, 6, 4, 6, 4, 6, 4, 9, 5, 9, 5, 5, 9, 9, 9, 4, 4, 10, 10, 5, 3, 3, 10, 3, 10, 6,6, 6, 10, 5,5,5,5,9,5,5,5,5,10,9,5,5,5 };
     public List<MeshRenderer> liquids = new List<MeshRenderer>();
 
     public Transform pouringPosition;
@@ -106,6 +106,8 @@ public class Tube : MonoBehaviour
     public event Action<List<int>> OnPouringDone;
     public void PouringDone()
     {
+        if (passengerIndexs.Count <= 0) return;
+
         isPouring = false;
         List<int> colorGroup = new List<int>();
         colorGroup.Add(passengerIndexs[0]);

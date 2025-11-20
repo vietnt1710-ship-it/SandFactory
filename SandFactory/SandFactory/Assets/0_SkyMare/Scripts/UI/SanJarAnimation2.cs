@@ -180,6 +180,7 @@ public class SanJarAnimation2 : MonoBehaviour
         go_Base.DOMoveY(baseStartPosY + 0.075f, 0.1f);
 
         transform.SetParent(null);
+        cap.DOLocalRotate(new Vector3(0, 0, 215), 0.1f);
         DOVirtual.DelayedCall(jumpPouringPointDuration * 0.95f, () =>
         {
             Debug.Log("Start Tween Cap When start Stack to Picture pharse 2");
@@ -188,7 +189,7 @@ public class SanJarAnimation2 : MonoBehaviour
             seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 165), 0.15f).SetEase(Ease.OutBounce, 3));
         });
 
-        StartCoroutine(Jump(transform, pouringPoint, jumpHeight /2, jumpPouringPointDuration, () =>
+        StartCoroutine(Jump(transform, pouringPoint, jumpHeight /4, jumpPouringPointDuration, () =>
         {
             DOVirtual.DelayedCall(0.15f, () =>
             {
@@ -201,13 +202,13 @@ public class SanJarAnimation2 : MonoBehaviour
     {
         //float baseStartPosY = go_Base.transform.position.y;
         //go_Base.DOMoveY(baseStartPosY + 0.075f, 0.1f);
+        cap.DOLocalRotate(new Vector3(0, 0, 115), 0.05f);
 
-     
         DOVirtual.DelayedCall(jumpPouringPointDuration * 0.8f, () =>
         {
             Debug.Log("Start Tween Cap When start Stack to Picture pharse 2");
             Sequence seq3 = DOTween.Sequence();
-            seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 135), squatTime * 2));//.SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
+            seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 175), squatTime * 2));//.SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
             seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 165), squatTime * 2).SetEase(Ease.OutBounce, 3));
         });
 
