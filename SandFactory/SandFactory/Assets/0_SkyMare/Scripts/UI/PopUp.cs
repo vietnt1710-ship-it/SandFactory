@@ -31,12 +31,15 @@ public class PopUp : MonoBehaviour
             //si.UnSubDisableIAP();
             GameData.OnPayedRemoveAds += Close;
         }
-
-        if (this is PopUpSetting st) st.MiniSub();
-        if (this is PopUpLose ls) ls.MiniSub();
-        if (this is PupUpWin wi) wi.MiniSub();
-        if (this is PopUpBoster bs) bs.MiniSub();
-        if (this is PopUpCoin co) co.MiniSub();
+        MiniSub();
+        //if (this is PopUpSetting st) st.MiniSub();
+        //if (this is PopUpLose ls) ls.MiniSub();
+        //if (this is PupUpWin wi) wi.MiniSub();
+        //if (this is PopUpBoster bs) bs.MiniSub();
+        //if (this is PopUpCoin co) co.MiniSub();
+        //if (this is PopUpWinCoin cow) cow.MiniSub();
+    }
+    public virtual void MiniSub() { 
     }
     public void BGTrigger()
     {

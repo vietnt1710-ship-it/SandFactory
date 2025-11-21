@@ -231,7 +231,6 @@ public class SanJarAnimation2 : MonoBehaviour
     public ParticleSystem explosion;
     public void CompleteFill()
     {
-
         hightLight.gameObject.SetActive(true);
         bottleManager.Play();
         DOVirtual.DelayedCall(0.55f, () =>

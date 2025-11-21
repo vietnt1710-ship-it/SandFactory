@@ -4,10 +4,11 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using data;
+using UnityEngine.UI;
 public abstract class ETC : MonoBehaviour
 {
     public TMP_Text txt_Value;
-
+    public Text txt_Value2;
     public ItemID itemID;
 
     public Item item { get; private set; }
@@ -16,7 +17,15 @@ public abstract class ETC : MonoBehaviour
     {
         item = GameManger.I.datas.items.GetItemByID(itemID);
 
-        txt_Value.text = item.Value.ToString();
+        if(txt_Value != null)
+        {
+            txt_Value.text = item.Value.ToString();
+        }
+        else if (txt_Value2 != null)
+        {
+            txt_Value2.text = item.Value.ToString();
+        }
+     
         item.OnItemChanged += UpdateValue;
         ActionStart();
     }

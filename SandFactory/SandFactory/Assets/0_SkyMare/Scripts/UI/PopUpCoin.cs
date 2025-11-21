@@ -5,7 +5,7 @@ using UnityEngine;
 public class PopUpCoin : PopUp
 {
     public ShopCoin ShopCoin;
-  public void MiniSub()
+  public override void MiniSub()
     {
         ShopCoin.LoadPack();
     }

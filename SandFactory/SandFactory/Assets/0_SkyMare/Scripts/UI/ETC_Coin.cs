@@ -25,19 +25,41 @@ public class ETC_Coin : ETC
         System.Action a = () =>
         {
             float duration = 1f;
-            int currentValue = int.Parse(txt_Value.text);
+            int currentValue = 0;
+            if (txt_Value != null)
+            {
+                currentValue = int.Parse(txt_Value.text);// = currentValue.ToString();
+            }
+            else if (txt_Value2 != null)
+            {
+                currentValue = int.Parse(txt_Value2.text);// = currentValue.ToString();
+            }
             int targetValue = item.Value;
 
             isTweening.Kill();
             isTweening = DOTween.To(() => currentValue, x =>
             {
                 currentValue = x;
-                txt_Value.text = currentValue.ToString();
+                if (txt_Value != null)
+                {
+                    txt_Value.text = currentValue.ToString();
+                }
+                else if (txt_Value2 != null)
+                {
+                    txt_Value2.text = currentValue.ToString();
+                }
             },
             targetValue, duration)
             .SetEase(Ease.InCubic).OnComplete(() =>
             {
-                txt_Value.text = targetValue.ToString();
+                if (txt_Value != null)
+                {
+                    txt_Value.text = currentValue.ToString();
+                }
+                else if (txt_Value2 != null)
+                {
+                    txt_Value2.text = currentValue.ToString();
+                }
             });
         };
         if(value > 0)

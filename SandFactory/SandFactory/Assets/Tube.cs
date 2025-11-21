@@ -1,10 +1,7 @@
 ﻿using DG.Tweening;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.Rendering.DebugUI;
 
 
 public class Tube : MonoBehaviour
@@ -55,7 +52,7 @@ public class Tube : MonoBehaviour
     {
         waterDrop.material.color = colors.colorWithIDs[passengerIndexs[0] - 1].color;
         waterDrop.material.SetFloat("_Fill", 0);
-        FillWater(0.5f, 0.2f);
+        FillWater(0.5f, 0.2f * count);
 
         DOVirtual.DelayedCall((duration * count)*0.6f, () =>
         {
@@ -93,10 +90,10 @@ public class Tube : MonoBehaviour
             //targetY -= stepY * count;
             //mainSeq.Join(liquids[i].transform.DOMoveY(targetY, duration * count).SetEase(Ease.Linear));
         }
-        DOVirtual.DelayedCall(duration * count, () =>
-        {
-            isPouring = false;
-        });
+        //DOVirtual.DelayedCall(duration * count, () =>
+        //{
+        //    isPouring = false;
+        //});
 
     }
 
@@ -106,7 +103,15 @@ public class Tube : MonoBehaviour
     public event Action<List<int>> OnPouringDone;
     public void PouringDone()
     {
-        if (passengerIndexs.Count <= 0) return;
+        if (passengerIndexs.Count <= 0)
+        {
+            DOVirtual.DelayedCall(duration * 3, () =>
+            {
+                LevelManager.I.Win();
+            });
+           
+            return;
+        }
 
         isPouring = false;
         List<int> colorGroup = new List<int>();

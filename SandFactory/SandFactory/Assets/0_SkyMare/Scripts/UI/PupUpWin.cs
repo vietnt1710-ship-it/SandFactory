@@ -13,12 +13,27 @@ public class PupUpWin : PopUp
     public Button btn_Claim;
     public Button btn_X2;
 
-    public void MiniSub()
+    public PopUp m_popUpWinCoin;
+
+    public override void MiniSub()
     {
         UIManager.I.eventManager.Subscribe(EventManager.Event.close_win_gameplay, base.Close);
         btn_Claim.onClick.AddListener(Get);
-        btn_X2.onClick.AddListener(X2);
     }
+
+    private void OnEnable()
+    {
+        DOVirtual.DelayedCall(5, () =>
+        {
+            base.Close();
+            DOVirtual.DelayedCall(0.1f, () =>
+            {
+                m_popUpWinCoin.Show();
+            });
+           
+        });
+    }
+
 
     public void Get()
     {

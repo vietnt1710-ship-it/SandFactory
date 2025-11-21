@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PopUpSetting : PopUp
@@ -53,7 +52,7 @@ public class PopUpSetting : PopUp
            tweenDuration
         ).SetEase(Ease.OutQuad);
     }
-    public void MiniSub()
+    public override void MiniSub()
     {
         UIManager.I.eventManager.Subscribe(event_OpenGame, OpenIngameButton);
         UIManager.I.eventManager.Subscribe(event_CloseGame, OpenHomeButton);
@@ -94,19 +93,20 @@ public class PopUpSetting : PopUp
     }
     public void ReplayEvent()
     {
-        UIManager.I.eventManager.Active(EventManager.Event.close_setting);
-        DOVirtual.DelayedCall(0.5f, () =>
-        {
-            UIManager.I.m_transferPanel.Open(() =>
-            {
-                UIManager.I.eventManager.Active(EventManager.Event.reset_gameplay);
-                DOVirtual.DelayedCall(0.1f, () =>
-                {
-                    UIManager.I.m_transferPanel.Close();
-                });
+        SceneManager.LoadScene(0);
+        //UIManager.I.eventManager.Active(EventManager.Event.close_setting);
+        //DOVirtual.DelayedCall(0.5f, () =>
+        //{
+        //    UIManager.I.m_transferPanel.Open(() =>
+        //    {
+        //        UIManager.I.eventManager.Active(EventManager.Event.reset_gameplay);
+        //        DOVirtual.DelayedCall(0.1f, () =>
+        //        {
+        //            UIManager.I.m_transferPanel.Close();
+        //        });
                
-            });
-        });
+        //    });
+        //});
     }
 
 }

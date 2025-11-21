@@ -17,7 +17,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1000
+  m_CustomRenderQueue: 2500
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses:
@@ -59,7 +59,7 @@ Material:
     - _CylinderHeight: 2
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Fill: -0.8
+    - _Fill: -0.7
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -87,9 +87,9 @@ Material:
     - _WobbleX: 0
     - _WobbleZ: 0
     - _WorkflowMode: 1
-    - _ZTest: 4
+    - _ZTest: 2
     - _ZWrite: 1
-    - _ZWriteControl: 1
+    - _ZWriteControl: 0
     m_Colors:
     - _BottomColor: {r: 0, g: 0.9150943, b: 0.15423916, a: 1}
     - _Color: {r: 0.4401914, g: 1, b: 0, a: 1}
@@ -97,8 +97,8 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _GravityDir: {r: 0, g: -1, b: 0, a: 0}
     - _LiquidColor: {r: 1, g: 0.30870265, b: 0, a: 1}
-    - _PresenalColor: {r: 0.8, g: 0.78560936, b: 0.027450992, a: 1}
-    - _SurfaceColor: {r: 1, g: 0.54992884, b: 0.2971698, a: 0}
+    - _PresenalColor: {r: 1, g: 0.56969076, b: 0.06132078, a: 1}
+    - _SurfaceColor: {r: 0.9528302, g: 0.7249229, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5441383870010052534
 MonoBehaviour:

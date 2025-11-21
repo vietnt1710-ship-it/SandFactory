@@ -26,6 +26,7 @@ public class HelperIngame : MonoBehaviour
 
     public void HelperAction()
     {
+        Debug.Log($"Helper {itemID} on click");
         if (item.Value > 0)
         {
             item.Value = -1;

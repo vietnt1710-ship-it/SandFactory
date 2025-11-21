@@ -25,6 +25,7 @@ public class SlotsManager : MonoBehaviour
                 return;
             }
         }
+        CheckEnd();
     }
 
     public Slot YoungestStackEmpty()
@@ -38,5 +39,30 @@ public class SlotsManager : MonoBehaviour
             }
         }
         return null;
+    }
+    bool losing = false;
+    public void CheckEnd()
+    {
+        if (losing) return;
+
+        if (CheckFullSlot())
+        {
+            losing = true;
+            Debug.Log("End Lose");
+            LevelManager.I.Lose();
+        }
+        else
+        {
+            Debug.Log("End No Lose");
+        }
+    }
+    public bool CheckFullSlot()
+    {
+        if (LevelManager.I.tube.isPouring) return false;
+        for (int i = 0;i < items.Count;i++)
+        {
+            if (items[i].isEmpty) return false;
+        }
+        return true;
     }
 }

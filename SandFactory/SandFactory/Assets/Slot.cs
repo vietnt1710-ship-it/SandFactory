@@ -57,6 +57,7 @@ public class Slot : MonoBehaviour
         if (colorIDs[0] == ColorID)
         {
             Debug.Log($"Matching tube {ColorID}");
+            LevelManager.I.tube.isPouring = true;
             jar.jarAnimation.JumpToPouringPoint(LevelManager.I.tube.pouringPosition, () =>
             {
                 Action fillDone = null;
@@ -106,6 +107,7 @@ public class Slot : MonoBehaviour
         }
         else
         {
+           
             return false;
         }
     }
@@ -116,8 +118,12 @@ public class Slot : MonoBehaviour
         Debug.Log($"Start find Matching tube group {colorIDs[0]}");
         if (colorIDs != null)
         {
-            CheckMatchingLiquid(colorIDs);
+            if (!CheckMatchingLiquid(colorIDs))
+            {
+                LevelManager.I.m_slots.CheckEnd();
+            }
         }
+
     
     }
 

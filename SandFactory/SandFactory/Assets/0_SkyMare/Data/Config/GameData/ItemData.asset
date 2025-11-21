@@ -20,8 +20,10 @@ MonoBehaviour:
   - id: 2
     itemSprite: {fileID: 21300000, guid: 9ab05dba671fb804cb45b891e38fb44a, type: 3}
   - id: 3
-    itemSprite: {fileID: 21300000, guid: e28781cf3f58aaa4c85110470219c59f, type: 3}
+    itemSprite: {fileID: 21300000, guid: 67bc1e46e34c98041974ba0c496f708d, type: 3}
   - id: 4
-    itemSprite: {fileID: 21300000, guid: 16601f1b020b12047aa9f80b6d262e7d, type: 3}
+    itemSprite: {fileID: 21300000, guid: d0f8180afdf1bf64fb015cb97e3632ef, type: 3}
   - id: 5
-    itemSprite: {fileID: 21300000, guid: 93bf23e6c0b59c147ba8be6e4696fdf3, type: 3}
+    itemSprite: {fileID: 21300000, guid: b60dffd4e3260bf4681bf6162e9ec4c5, type: 3}
+  - id: 6
+    itemSprite: {fileID: 21300000, guid: c19f68780e279cd4086e7a540a190a5a, type: 3}
