@@ -139,7 +139,7 @@ public class SegmentedColoredPipe : MonoBehaviour
     {
         if (Application.isPlaying && roundedPolylinePipe != null)
         {
-            //GenerateSegmentedPipe();
+            GenerateSegmentedPipe(segmentColorIndexs);
         }
     }
 
