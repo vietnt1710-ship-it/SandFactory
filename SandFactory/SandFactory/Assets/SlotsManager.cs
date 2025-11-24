@@ -62,7 +62,11 @@ public class SlotsManager : MonoBehaviour
         {
             losing = true;
             Debug.Log("End Lose");
-            LevelManager.I.Lose();
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                LevelManager.I.Lose();
+            });
+         
         }
         else
         {
