@@ -41,7 +41,7 @@ public class PopUpLose : PopUp
         else
         {
             base.Close();
-            DOVirtual.DelayedCall(0.1f, () =>
+            DOVirtual.DelayedCall(tweenDuration * 0.7f, () =>
             {
                 pupUpLoseConfirm.Show();
             });
@@ -51,7 +51,7 @@ public class PopUpLose : PopUp
     public void ActionX()
     {
         base.Close();
-        DOVirtual.DelayedCall(0.1f, () =>
+        DOVirtual.DelayedCall(tweenDuration * 0.7f, () =>
         {
             pupUpLoseConfirm.Show();
         });

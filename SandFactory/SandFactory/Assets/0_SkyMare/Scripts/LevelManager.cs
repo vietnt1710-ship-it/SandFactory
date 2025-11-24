@@ -51,7 +51,8 @@ public class LevelManager : Singleton<LevelManager>
     }
     public void Lose()
     {
-        m_stackManager.LoseAnim();
+        m_slots.LoseAnim();
+
         DOVirtual.DelayedCall(2, () =>
         {
             UIManager.I.eventManager.Active(EventManager.Event.open_lose_gameplay);

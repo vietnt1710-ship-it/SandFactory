@@ -424,26 +424,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5168547410303879809}
     m_Modifications:
-    - target: {fileID: 1359513463363968082, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289122389352662590, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 128.604
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289122389352662590, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 138.56401
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289122389352662590, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.073
-      objectReference: {fileID: 0}
-    - target: {fileID: 2289122389352662590, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.1128
-      objectReference: {fileID: 0}
     - target: {fileID: 3051616245737067290, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
       propertyPath: m_Name
       value: Tile
@@ -487,14 +467,6 @@ PrefabInstance:
     - target: {fileID: 3294249568188474167, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6513080945175473182, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.024
-      objectReference: {fileID: 0}
-    - target: {fileID: 8784620665841848382, guid: 8b5b25b75621c26429a28b554ae2645a, type: 3}
-      propertyPath: Recovery
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

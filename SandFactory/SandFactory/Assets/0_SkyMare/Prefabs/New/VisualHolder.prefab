@@ -5464,8 +5464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxWobble: 0.05
-  WobbleSpeed: 2
-  Recovery: 7
+  WobbleSpeed: 0.2
+  Recovery: 2
   wobberCutterZ: -0.875
   lowestFill: -0.4
   startPourWaterAngle: -52

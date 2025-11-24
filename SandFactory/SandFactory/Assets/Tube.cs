@@ -16,7 +16,7 @@ public class Tube : MonoBehaviour
     public MeshRenderer liquid;
     public ColorID colors;
 
-    private List<int> passengerIndexs = new List<int>() { 9, 4, 4, 9, 4, 4, 6, 4, 6, 4, 6, 4, 9, 5, 9, 5, 5, 9, 9, 9, 4, 4, 10, 10, 5, 3, 3, 10, 3, 10, 6,6, 6, 10, 5,5,5,5,9,5,5,5,5,10,9,5,5,5 };
+    private List<int> passengerIndexs = new List<int>() { 9, 4, 4, -9, -4, -4, 6, 4, 6, 4, 6, 4, 9, 5, 9, 5, 5, 9, 9, 9, 4, 4, 10, 10, 5, 3, 3, 10, 3, 10, 6,6, 6, 10, 5,5,5,5,9,5,5,5,5,10,9,5,5,5 };
     public List<MeshRenderer> liquids = new List<MeshRenderer>();
 
     public Transform pouringPosition;
@@ -146,10 +146,12 @@ public class Tube : MonoBehaviour
   
     public void GeneratePassenger()
     {
-        List<Color> cls = new List<Color>();
+        //List<Color> cls = new List<Color>()
+        List<int> cls = new List<int>();
         for (int i = passengerIndexs.Count -1 ; i >= 0; i--)
         {
-            cls.Add(colors.colorWithIDs[passengerIndexs[i] - 1].liquidColor);
+            //cls.Add(colors.colorWithIDs[passengerIndexs[i] - 1].liquidColor);
+            cls.Add(passengerIndexs[i] - 1);
             //var go_Li = Instantiate(liquid);
             //go_Li.transform.SetParent(transform, false);
             //go_Li.transform.localPosition = new Vector3(0, startY + ( (i+1) * stepY), 0);

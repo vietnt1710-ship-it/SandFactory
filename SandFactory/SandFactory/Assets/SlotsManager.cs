@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,18 @@ public class SlotsManager : MonoBehaviour
 {
     public List<Slot> items;
 
+    public void LoseAnim()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            int idx = i;
+            DOVirtual.DelayedCall(0.2f * idx, () =>
+            {
+                items[idx].jar.jarAnimation.CloseCap();
+
+            });
+        }
+    }
     private void Start()
     {
         items = GetComponentsInChildren<Slot>().ToList();

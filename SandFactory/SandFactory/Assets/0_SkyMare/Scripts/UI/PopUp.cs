@@ -54,7 +54,7 @@ public class PopUp : MonoBehaviour
     }
     public Image bg;
     public CanvasGroup cg => GetComponent<CanvasGroup>();
-    public const float tweenDuration = 0.25f;
+    public const float tweenDuration = 0.5f;
     public Sequence mainSeq;
     public virtual void Show()
     {

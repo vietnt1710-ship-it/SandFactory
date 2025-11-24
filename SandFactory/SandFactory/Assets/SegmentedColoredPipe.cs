@@ -15,6 +15,10 @@ public class SegmentedColoredPipe : MonoBehaviour
     [Header("Material Settings")]
     [SerializeField] private Material pipeMaterial;
 
+    [Header("Render Settings")]
+    [SerializeField] private int maxRenderPoints = 50; // Số điểm tối đa để render mesh
+    [SerializeField] private int maxInitialColors = 30; // Số màu tối đa dùng path ban đầu
+
     private List<GameObject> segmentObjects = new List<GameObject>();
     private List<Vector3> pathPoints = new List<Vector3>();
     private List<Vector3> pathTangents = new List<Vector3>();
@@ -27,12 +31,11 @@ public class SegmentedColoredPipe : MonoBehaviour
     // Lưu số lượng điểm ban đầu để tính toán segment
     private int initialPointCount = 0;
 
-    // === MỚI: Lưu list index của từng segment màu ===
     [System.Serializable]
     public class SegmentIndexRange
     {
         public int totalPoints;
-        public SegmentIndexRange( int start, int end)
+        public SegmentIndexRange(int start, int end)
         {
             for (int i = start; i <= end; i++)
             {
@@ -41,9 +44,7 @@ public class SegmentedColoredPipe : MonoBehaviour
         }
     }
 
-    // List lưu trữ thông tin index của từng segment
     public List<SegmentIndexRange> segmentIndexRanges = new List<SegmentIndexRange>();
-    // === KẾT THÚC PHẦN MỚI ===
 
     void Start()
     {
@@ -59,20 +60,19 @@ public class SegmentedColoredPipe : MonoBehaviour
         //    RemoveVertextList();
         //}
     }
-    public void RemoveVertextList(float time ,int count = 1)
+
+    public void RemoveVertextList(float time, int count = 1)
     {
         isMoving = true;
 
         int countRemove = 0;
-        
-        for(int i = 0; i < count; i++)
+
+        for (int i = 0; i < count; i++)
         {
             var lastSegment = segmentIndexRanges[^1];
             segmentIndexRanges.Remove(lastSegment);
             countRemove += lastSegment.totalPoints;
-        } 
-
-     
+        }
 
         float duration = time * count;
         float eachDuration = duration / countRemove;
@@ -95,7 +95,6 @@ public class SegmentedColoredPipe : MonoBehaviour
         {
             isMoving = false;
         });
-
     }
 
     void OnValidate()
@@ -106,10 +105,14 @@ public class SegmentedColoredPipe : MonoBehaviour
         }
     }
 
+    public List<int> segmentColorIndexs = new List<int>();
+
     [ContextMenu("Generate Segmented Pipe")]
-    public void GenerateSegmentedPipe(List<Color> segmentColors)
+   
+    public void GenerateSegmentedPipe(List<int> segmentColors)
     {
         this.segmentColors = new List<Color>(segmentColors);
+
         ClearSegments();
 
         if (roundedPolylinePipe == null)
@@ -132,15 +135,52 @@ public class SegmentedColoredPipe : MonoBehaviour
             return;
         }
 
-        // Lưu số lượng điểm ban đầu
+        // === MỚI: Chia path ban đầu cho 30 màu đầu, thêm điểm cho các màu còn lại ===
+        AddPointsForExtraColors();
+
+        // Lưu số lượng điểm ban đầu (sau khi đã thêm điểm)
         initialPointCount = pathPoints.Count;
 
-        // === MỚI: Tính toán và lưu index ranges cho từng segment ===
+        // Tính toán và lưu index ranges cho từng segment
         CalculateSegmentIndexRanges();
-        // === KẾT THÚC PHẦN MỚI ===
 
         CalculateRotationMinimizingFrames();
         CreateSegmentedPipeMesh();
+    }
+
+    // === MỚI: Thêm điểm vào đầu path cho các màu vượt quá 30 ===
+    void AddPointsForExtraColors()
+    {
+        if (segmentColors.Count <= maxInitialColors)
+        {
+            // Nếu số màu <= 30, dùng toàn bộ path ban đầu
+            Debug.Log($"Using all {pathPoints.Count} points for {segmentColors.Count} colors");
+            return;
+        }
+
+        // Số màu cần thêm điểm
+        int extraColors = segmentColors.Count - maxInitialColors;
+     
+        // Tính số điểm cần thêm (giả sử mỗi màu thêm cần ít nhất 10 điểm)
+        int pointsPerExtraColor = Mathf.Max(10, pathPoints.Count / maxInitialColors);
+        int pointsToAdd = extraColors * pointsPerExtraColor;
+
+        maxRenderPoints = pointsPerExtraColor * maxInitialColors;
+
+        Debug.Log($"Adding {pointsToAdd} points for {extraColors} extra colors (total colors: {segmentColors.Count})");
+
+        float distance = Vector3.Distance(pathPoints[0], pathPoints[1]);
+
+        // Thêm điểm vào đầu path
+        for (int i = 0; i < pointsToAdd; i++)
+        {
+            Vector3 p0 = pathPoints[0];
+            Vector3 newp0 = p0 + new Vector3(0, distance, 0);
+            pathPoints.Insert(0, newp0);
+            pathTangents.Insert(0, pathTangents[0]);
+        }
+
+        Debug.Log($"Total points after adding: {pathPoints.Count}");
     }
 
     // === MỚI: Phương thức tính toán index ranges ===
@@ -161,19 +201,12 @@ public class SegmentedColoredPipe : MonoBehaviour
                 endIdx = initialPointCount - 1;
             }
 
-            SegmentIndexRange range = new SegmentIndexRange(
-                startIdx,
-                endIdx
-            );
-
+            SegmentIndexRange range = new SegmentIndexRange(startIdx, endIdx);
             segmentIndexRanges.Add(range);
 
             Debug.Log($"Segment {segIdx} (Color: {segmentColors[segIdx]}): Points {startIdx} to {endIdx} ({range.totalPoints} points)");
         }
     }
-
-
-    // === KẾT THÚC PHẦN MỚI ===
 
     void GetPathFromRoundedPolyline()
     {
@@ -269,14 +302,13 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         // Cập nhật mesh
         UpdatePipeMesh();
-
     }
-    
-
 
     void RecalculateTangents()
     {
         pathTangents.Clear();
+
+        if (pathPoints.Count == 0) return;
 
         for (int i = 0; i < pathPoints.Count; i++)
         {
@@ -284,17 +316,28 @@ public class SegmentedColoredPipe : MonoBehaviour
 
             if (i == 0)
             {
-                tangent = (pathPoints[i + 1] - pathPoints[i]).normalized;
+                // Điểm đầu: dùng vector từ điểm 0 đến 1
+                tangent = (pathPoints[1] - pathPoints[0]).normalized;
             }
             else if (i == pathPoints.Count - 1)
             {
+                // Điểm cuối: dùng vector từ điểm n-2 đến n-1
                 tangent = (pathPoints[i] - pathPoints[i - 1]).normalized;
             }
             else
             {
-                Vector3 tangent1 = (pathPoints[i] - pathPoints[i - 1]).normalized;
-                Vector3 tangent2 = (pathPoints[i + 1] - pathPoints[i]).normalized;
-                tangent = (tangent1 + tangent2).normalized;
+                // Điểm giữa: tính trung bình của hai vector
+                Vector3 toPrev = (pathPoints[i] - pathPoints[i - 1]).normalized;
+                Vector3 toNext = (pathPoints[i + 1] - pathPoints[i]).normalized;
+
+                // Ưu tiên hướng về phía trước
+                tangent = (toPrev + toNext).normalized;
+
+                // Nếu vector gần bằng 0, sử dụng hướng từ điểm trước
+                if (tangent.magnitude < 0.001f)
+                {
+                    tangent = toPrev;
+                }
             }
 
             pathTangents.Add(tangent);
@@ -350,10 +393,13 @@ public class SegmentedColoredPipe : MonoBehaviour
         List<Vector2> uvs = new List<Vector2>();
         List<Vector3> normals = new List<Vector3>();
 
-        // Tính segment dựa trên số điểm ban đầu, không phải số điểm hiện tại
         float pointsPerSegment = (float)initialPointCount / segmentColors.Count;
 
-        for (int i = 0; i < pathPoints.Count; i++)
+        // Xác định số điểm cần render (tối đa maxRenderPoints điểm cuối)
+        int pointsToRender = Mathf.Min(maxRenderPoints, pathPoints.Count);
+        int startIndex = pathPoints.Count - pointsToRender; // Bắt đầu từ điểm thứ (count - maxRenderPoints)
+
+        for (int i = startIndex; i < pathPoints.Count; i++)
         {
             Vector3 point = pathPoints[i];
             Vector3 tangent = pathTangents[i];
@@ -361,7 +407,6 @@ public class SegmentedColoredPipe : MonoBehaviour
             Vector3 binormal = pathBinormals[i];
 
             // Tính segment index dựa trên vị trí trong mảng ban đầu
-            // Điểm ở đầu mảng thuộc segment đầu tiên
             int currentSegmentIndex = Mathf.Min((int)(i / pointsPerSegment), segmentColors.Count - 1);
 
             int circleStartIndex = vertices.Count;
@@ -380,11 +425,12 @@ public class SegmentedColoredPipe : MonoBehaviour
                 normals.Add(vertexNormal);
 
                 float u = j / (float)radialSegments;
-                float v = i / (float)(pathPoints.Count - 1);
+                float v = (i - startIndex) / (float)(pointsToRender - 1); // Điều chỉnh UV mapping
                 uvs.Add(new Vector2(u, v));
             }
 
-            if (i > 0)
+            // Chỉ tạo triangles nếu không phải điểm đầu tiên của đoạn render
+            if (i > startIndex)
             {
                 int prevCircleStart = circleStartIndex - radialSegments;
 
@@ -408,13 +454,12 @@ public class SegmentedColoredPipe : MonoBehaviour
             }
         }
 
-        CreateStartCap(vertices, trianglesPerSegment[0], normals, uvs, pathPoints[0],
-                      pathTangents[0], pathNormals[0], pathBinormals[0]);
-
-        //int lastSegmentIndex = Mathf.Min((int)((pathPoints.Count - 1) / pointsPerSegment), segmentColors.Count - 1);
-        //CreateEndCap(vertices, trianglesPerSegment[lastSegmentIndex], normals, uvs,
-        //            pathPoints[pathPoints.Count - 1], pathTangents[pathPoints.Count - 1],
-        //            pathNormals[pathPoints.Count - 1], pathBinormals[pathPoints.Count - 1]);
+        // Tạo start cap cho điểm đầu tiên của đoạn render
+        if (pointsToRender > 0)
+        {
+            CreateStartCap(vertices, trianglesPerSegment[0], normals, uvs, pathPoints[startIndex],
+                          pathTangents[startIndex], pathNormals[startIndex], pathBinormals[startIndex]);
+        }
 
         mesh.vertices = vertices.ToArray();
         mesh.normals = normals.ToArray();
@@ -521,44 +566,34 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         if (pathPoints.Count == 0) return;
 
+        // Khởi tạo frame đầu tiên
         Vector3 tangent0 = pathTangents[0];
-        Vector3 reference = Mathf.Abs(Vector3.Dot(tangent0, Vector3.up)) > 0.9f ? Vector3.forward : Vector3.up;
-        Vector3 binormal0 = Vector3.Cross(tangent0, reference).normalized;
-        Vector3 normal0 = Vector3.Cross(binormal0, tangent0).normalized;
+        Vector3 normal0, binormal0;
 
-        if (initialFrameTwist != 0f)
-        {
-            Quaternion twistRotation = Quaternion.AngleAxis(initialFrameTwist * Mathf.Rad2Deg, tangent0);
-            normal0 = twistRotation * normal0;
-            binormal0 = twistRotation * binormal0;
-        }
+        // Chọn reference vector tránh song song với tangent
+        Vector3 reference = Mathf.Abs(Vector3.Dot(tangent0, Vector3.up)) < 0.9f ? Vector3.up : Vector3.forward;
+
+        binormal0 = Vector3.Cross(tangent0, reference).normalized;
+        normal0 = Vector3.Cross(binormal0, tangent0).normalized;
 
         pathNormals.Add(normal0);
         pathBinormals.Add(binormal0);
 
+        // Tính toán các frame tiếp theo sử dụng Parallel Transport
         for (int i = 1; i < pathPoints.Count; i++)
         {
-            Vector3 prevNormal = pathNormals[i - 1];
             Vector3 prevTangent = pathTangents[i - 1];
             Vector3 currTangent = pathTangents[i];
+            Vector3 prevNormal = pathNormals[i - 1];
 
-            if (Vector3.Dot(prevTangent, currTangent) > 0.9999f)
-            {
-                pathNormals.Add(prevNormal);
-                pathBinormals.Add(pathBinormals[i - 1]);
-                continue;
-            }
+            // Sử dụng phép quay để chuyển từ frame trước sang frame hiện tại
+            Quaternion rotation = Quaternion.FromToRotation(prevTangent, currTangent);
+            Vector3 newNormal = rotation * prevNormal;
 
-            Vector3 v1 = pathPoints[i] - pathPoints[i - 1];
-            float c1 = 2.0f / Vector3.Dot(v1, v1);
-            Vector3 rL = prevNormal - c1 * Vector3.Dot(v1, prevNormal) * v1;
-
-            Vector3 tL = currTangent - prevTangent;
-            float c2 = 2.0f / Vector3.Dot(tL, tL);
-            Vector3 newNormal = rL - c2 * Vector3.Dot(tL, rL) * tL;
-            newNormal.Normalize();
-
+            // Đảm bảo tính trực giao
             Vector3 newBinormal = Vector3.Cross(currTangent, newNormal).normalized;
+            newNormal = Vector3.Cross(newBinormal, currTangent).normalized;
+
             pathNormals.Add(newNormal);
             pathBinormals.Add(newBinormal);
         }
@@ -569,5 +604,4 @@ public class SegmentedColoredPipe : MonoBehaviour
     {
         ClearSegments();
     }
-
 }
