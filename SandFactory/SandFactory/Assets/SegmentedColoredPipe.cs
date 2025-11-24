@@ -8,7 +8,8 @@ public class SegmentedColoredPipe : MonoBehaviour
     [SerializeField] private RoundedPolylinePipe roundedPolylinePipe;
 
     [Header("Segmentation Settings")]
-    [SerializeField] private List<Color> segmentColors = new List<Color>();
+    //[SerializeField] private List<Color> segmentColors = new List<Color>();
+    public ColorID colors;
     [SerializeField] private float pipeRadius = 0.5f;
     [SerializeField] private int radialSegments = 16;
 
@@ -35,17 +36,21 @@ public class SegmentedColoredPipe : MonoBehaviour
     public class SegmentIndexRange
     {
         public int totalPoints;
-        public SegmentIndexRange(int start, int end)
+        public int colorID;
+        public int index;
+        public SegmentIndexRange(int start, int end, int colorID, int index)
         {
             for (int i = start; i <= end; i++)
             {
                 this.totalPoints++;
             }
+
+            this.colorID = colorID;
+            this.index = index;
         }
     }
 
     public List<SegmentIndexRange> segmentIndexRanges = new List<SegmentIndexRange>();
-
     void Start()
     {
         //GenerateSegmentedPipe();
@@ -65,36 +70,69 @@ public class SegmentedColoredPipe : MonoBehaviour
     {
         isMoving = true;
 
-        int countRemove = 0;
-
-        for (int i = 0; i < count; i++)
-        {
-            var lastSegment = segmentIndexRanges[^1];
-            segmentIndexRanges.Remove(lastSegment);
-            countRemove += lastSegment.totalPoints;
-        }
-
-        float duration = time * count;
-        float eachDuration = duration / countRemove;
-
         // Tạo sequence
         Sequence seq = DOTween.Sequence();
 
-        for (int i = 0; i < countRemove; i++)
+        for (int segmentIdx = 0; segmentIdx < count; segmentIdx++)
         {
-            // Chèn vào sequence: delay rồi gọi Moving()
-            seq.AppendInterval(eachDuration)
-               .AppendCallback(() =>
-               {
-                   Moving(eachDuration); // gọi mỗi lần
-               });
+            var lastSegment = segmentIndexRanges[^(segmentIdx + 1)]; // Lấy segment từ cuối
+            int pointsInThisSegment = lastSegment.totalPoints;
+            float eachDuration = time / pointsInThisSegment;
+
+            // Thêm animation cho từng point trong segment này
+            for (int pointIdx = 0; pointIdx < pointsInThisSegment; pointIdx++)
+            {
+                seq.AppendInterval(eachDuration)
+                   .AppendCallback(() =>
+                   {
+                       Moving(eachDuration);
+                   });
+            }
+
+            // Sau khi hoàn thành segment này, gọi RemoveLastMaterialAndShowHiddenColor
+            seq.AppendCallback(() =>
+            {
+                segmentIndexRanges.RemoveAt(segmentIndexRanges.Count - 1);
+                RemoveLastMaterialAndShowHiddenColor();
+            });
         }
 
-        // Khi tất cả duration hoàn tất
+        // Khi tất cả hoàn tất
         seq.OnComplete(() =>
         {
             isMoving = false;
         });
+    }
+    public void RemoveLastMaterialAndShowHiddenColor()
+    {
+        if (segmentIndexRanges[segmentIndexRanges.Count - 1].colorID < 0)
+        {
+            List<SegmentIndexRange> segments = new List<SegmentIndexRange>();
+
+            segments.Add(segmentIndexRanges[segmentIndexRanges.Count - 1]);
+
+            if (segmentIndexRanges.Count > 1)
+            {
+                for (int i = segmentIndexRanges.Count - 2; i >= 0; i--)
+                {
+                    if (segmentIndexRanges[i].colorID == segments[0].colorID)
+                    {
+                        segments.Add(segmentIndexRanges[i]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < segments.Count; i++)
+            {
+                segments[i].colorID = Mathf.Abs(segments[i].colorID);
+                materials[segments[i].index].DOColor(colors.colorWithIDs[segments[i].colorID].surfaceColor, 0.2f);
+            }
+
+        }
     }
 
     void OnValidate()
@@ -111,7 +149,7 @@ public class SegmentedColoredPipe : MonoBehaviour
    
     public void GenerateSegmentedPipe(List<int> segmentColors)
     {
-        this.segmentColors = new List<Color>(segmentColors);
+        this.segmentColorIndexs = new List<int>(segmentColors);
 
         ClearSegments();
 
@@ -151,15 +189,15 @@ public class SegmentedColoredPipe : MonoBehaviour
     // === MỚI: Thêm điểm vào đầu path cho các màu vượt quá 30 ===
     void AddPointsForExtraColors()
     {
-        if (segmentColors.Count <= maxInitialColors)
+        if (segmentColorIndexs.Count <= maxInitialColors)
         {
             // Nếu số màu <= 30, dùng toàn bộ path ban đầu
-            Debug.Log($"Using all {pathPoints.Count} points for {segmentColors.Count} colors");
+            Debug.Log($"Using all {pathPoints.Count} points for {segmentColorIndexs.Count} colors");
             return;
         }
 
         // Số màu cần thêm điểm
-        int extraColors = segmentColors.Count - maxInitialColors;
+        int extraColors = segmentColorIndexs.Count - maxInitialColors;
      
         // Tính số điểm cần thêm (giả sử mỗi màu thêm cần ít nhất 10 điểm)
         int pointsPerExtraColor = Mathf.Max(10, pathPoints.Count / maxInitialColors);
@@ -167,7 +205,7 @@ public class SegmentedColoredPipe : MonoBehaviour
 
         maxRenderPoints = pointsPerExtraColor * maxInitialColors;
 
-        Debug.Log($"Adding {pointsToAdd} points for {extraColors} extra colors (total colors: {segmentColors.Count})");
+        Debug.Log($"Adding {pointsToAdd} points for {extraColors} extra colors (total colors: {segmentColorIndexs.Count})");
 
         float distance = Vector3.Distance(pathPoints[0], pathPoints[1]);
 
@@ -188,23 +226,23 @@ public class SegmentedColoredPipe : MonoBehaviour
     {
         segmentIndexRanges.Clear();
 
-        float pointsPerSegment = (float)initialPointCount / segmentColors.Count;
+        float pointsPerSegment = (float)initialPointCount / segmentColorIndexs.Count;
 
-        for (int segIdx = 0; segIdx < segmentColors.Count; segIdx++)
+        for (int segIdx = 0; segIdx < segmentColorIndexs.Count; segIdx++)
         {
             int startIdx = Mathf.RoundToInt(segIdx * pointsPerSegment);
             int endIdx = Mathf.RoundToInt((segIdx + 1) * pointsPerSegment) - 1;
 
             // Đảm bảo segment cuối cùng bao gồm tất cả điểm còn lại
-            if (segIdx == segmentColors.Count - 1)
+            if (segIdx == segmentColorIndexs.Count - 1)
             {
                 endIdx = initialPointCount - 1;
             }
 
-            SegmentIndexRange range = new SegmentIndexRange(startIdx, endIdx);
+            SegmentIndexRange range = new SegmentIndexRange(startIdx, endIdx, segmentColorIndexs[segIdx], segIdx);
             segmentIndexRanges.Add(range);
 
-            Debug.Log($"Segment {segIdx} (Color: {segmentColors[segIdx]}): Points {startIdx} to {endIdx} ({range.totalPoints} points)");
+            Debug.Log($"Segment {segIdx} (Color: {segmentColorIndexs[segIdx]}): Points {startIdx} to {endIdx} ({range.totalPoints} points)");
         }
     }
 
@@ -243,7 +281,8 @@ public class SegmentedColoredPipe : MonoBehaviour
         currentMeshFilter = null;
         segmentIndexRanges.Clear(); // Xóa luôn index ranges
     }
-
+    Material[] materials;
+    MeshRenderer meshRenderer;
     void CreateSegmentedPipeMesh()
     {
         GameObject pipeObject = new GameObject("ColoredPipe");
@@ -252,17 +291,25 @@ public class SegmentedColoredPipe : MonoBehaviour
         pipeObject.transform.localPosition = Vector3.zero;
 
         MeshFilter meshFilter = pipeObject.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = pipeObject.AddComponent<MeshRenderer>();
+        meshRenderer = pipeObject.AddComponent<MeshRenderer>();
 
         Mesh pipeMesh = CreateCurvedPipeMesh();
         meshFilter.mesh = pipeMesh;
         currentMeshFilter = meshFilter;
 
-        Material[] materials = new Material[segmentColors.Count];
-        for (int i = 0; i < segmentColors.Count; i++)
+        materials = new Material[segmentColorIndexs.Count];
+        for (int i = 0; i < segmentColorIndexs.Count; i++)
         {
             materials[i] = new Material(pipeMaterial != null ? pipeMaterial : new Material(Shader.Find("Standard")));
-            materials[i].color = segmentColors[i];
+            if (segmentColorIndexs[i] >= 0)
+            {
+                materials[i].color = colors.colorWithIDs[segmentColorIndexs[i]].surfaceColor;
+            }
+            else
+            {
+                materials[i].color = Color.gray;
+            }
+            //materials[i].color = segmentColors[i];
         }
         meshRenderer.materials = materials;
 
@@ -385,15 +432,15 @@ public class SegmentedColoredPipe : MonoBehaviour
         mesh.name = "Curved Segmented Pipe";
 
         List<Vector3> vertices = new List<Vector3>();
-        List<int>[] trianglesPerSegment = new List<int>[segmentColors.Count];
-        for (int i = 0; i < segmentColors.Count; i++)
+        List<int>[] trianglesPerSegment = new List<int>[segmentColorIndexs.Count];
+        for (int i = 0; i < segmentColorIndexs.Count; i++)
         {
             trianglesPerSegment[i] = new List<int>();
         }
         List<Vector2> uvs = new List<Vector2>();
         List<Vector3> normals = new List<Vector3>();
 
-        float pointsPerSegment = (float)initialPointCount / segmentColors.Count;
+        float pointsPerSegment = (float)initialPointCount / segmentColorIndexs.Count;
 
         // Xác định số điểm cần render (tối đa maxRenderPoints điểm cuối)
         int pointsToRender = Mathf.Min(maxRenderPoints, pathPoints.Count);
@@ -407,7 +454,7 @@ public class SegmentedColoredPipe : MonoBehaviour
             Vector3 binormal = pathBinormals[i];
 
             // Tính segment index dựa trên vị trí trong mảng ban đầu
-            int currentSegmentIndex = Mathf.Min((int)(i / pointsPerSegment), segmentColors.Count - 1);
+            int currentSegmentIndex = Mathf.Min((int)(i / pointsPerSegment), segmentColorIndexs.Count - 1);
 
             int circleStartIndex = vertices.Count;
 
@@ -465,8 +512,8 @@ public class SegmentedColoredPipe : MonoBehaviour
         mesh.normals = normals.ToArray();
         mesh.uv = uvs.ToArray();
 
-        mesh.subMeshCount = segmentColors.Count;
-        for (int i = 0; i < segmentColors.Count; i++)
+        mesh.subMeshCount = segmentColorIndexs.Count;
+        for (int i = 0; i < segmentColorIndexs.Count; i++)
         {
             mesh.SetTriangles(trianglesPerSegment[i].ToArray(), i);
         }
