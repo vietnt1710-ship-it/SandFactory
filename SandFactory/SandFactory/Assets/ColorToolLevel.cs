@@ -155,24 +155,64 @@ namespace ToolLevel
         }
         public void ImageHandel(Image image)
         {
-            image.color = selectColor;
-            if (isHidden)
+            if (!isInsert)
             {
-                image.sprite = hiddenSprite;
-                image.name = (-selectID).ToString();
+                image.color = selectColor;
+                if (isHidden)
+                {
+                    image.sprite = hiddenSprite;
+                    image.name = (-selectID).ToString();
+                }
+                else
+                {
+                    image.sprite = null;
+                    image.name = selectID.ToString();
+                }
             }
             else
             {
-                image.sprite = null;
-                image.name = selectID.ToString();
+                int index = tubes.tubeItems.IndexOf(image);
+                for (int i = tubes.tubeItems.Count - 1 ; i  > index; i--)
+                {
+                    tubes.tubeItems[i].name = tubes.tubeItems[i - 1].name;
+                    tubes.tubeItems[i].sprite = tubes.tubeItems[i - 1].sprite;
+                    tubes.tubeItems[i].color = tubes.tubeItems[i +-1].color;
+                }
+                image.color = selectColor;
+                if (isHidden)
+                {
+                    image.sprite = hiddenSprite;
+                    image.name = (-selectID).ToString();
+                }
+                else
+                {
+                    image.sprite = null;
+                    image.name = selectID.ToString();
+                }
             }
+            
+           
         }
         public void ImageRemoveHandle(Image image)
         {
             // Double click - reset màu
-            image.color = new Color(55f / 255f, 55f / 255f, 55f / 255f);
-            image.sprite = null;
-            image.name = "None";
+            if (!isInsert)
+            {
+                image.color = new Color(55f / 255f, 55f / 255f, 55f / 255f);
+                image.sprite = null;
+                image.name = "None";
+            }
+            else
+            {
+                int index = tubes.tubeItems.IndexOf(image);
+                for (int i = index; i < tubes.tubeItems.Count - 2; i++)
+                {
+                    tubes.tubeItems[i].name = tubes.tubeItems[i + 1].name;
+                    tubes.tubeItems[i].sprite = tubes.tubeItems[i + 1].sprite;
+                    tubes.tubeItems[i].color = tubes.tubeItems[i + 1].color;
+                }
+            }
+          
         }
     }
 }
