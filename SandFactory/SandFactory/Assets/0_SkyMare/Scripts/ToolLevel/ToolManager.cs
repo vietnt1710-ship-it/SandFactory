@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,121 +16,125 @@ namespace ToolLevel
 {
     public class ToolManager : Singleton<ToolManager>
     {
-
         [Header("Settings")]
-        public PaintingData paintingData;
+        //public PaintingData paintingData;
         public TileManager tileManager;
         public StorgeManager storgeManager;
-        public PaintingInfor paintingInfor;
+        public TubeToolLevel tube;
+        //public PaintingInfor paintingInfor;
         public ColorID colorID;
+        public LevelDataLoader levelDataLoader;
+
+        public Button btn_LoadLevel;
+        public Button btn_NewLevel;
+        public Button btn_Clear;
+        public TMP_Text levelText;
+        bool isNewLevel = true;
+        public string fileName;
+
+        public void Start()
+        {
+            btn_LoadLevel.onClick.AddListener(LoadSelectLevel);
+            btn_NewLevel.onClick.AddListener(CreateNewLevel);
+            btn_Clear.onClick.AddListener(Clear);
+
+            levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+        }
+        public void LoadSelectLevel()
+        {
+            if (levelDataLoader.selectedLevelData == null) return;
+            isNewLevel = false;
+
+            levelText.text = $"{levelDataLoader.selectedLevelData.name}";
+
+            LoadOldData();
+        }
+        public void CreateNewLevel()
+        {
+            isNewLevel = true;
+
+            levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+            fileName = $"LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+        }
+        public void Clear()
+        {
+            isNewLevel = true;
+
+            levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+            fileName = $"LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+
+            NewLevel();
+        }
 
         public Color ColorWithID(int colorID)
         {
-            return this.colorID.colorWithIDs.FirstOrDefault(c => c.ID == colorID).color;
+            Debug.Log($"ColorWithID {colorID}");
+            return this.colorID.colorWithIDs[Mathf.Abs(colorID) -1].color;
         }
 #if UNITY_EDITOR
-        public string levelDataPath = "Assets/0_SkyMare/Data/Config/Level";
-        public string picDataPath = "Assets/0_SkyMare/Data/Config/Picture";
-
-        public string fileName;
-        List<SpriteInfor> spriteInfors;
-
-        public PicData picData;
-        public Button reloadData;
+        public string levelDataPath = "Assets/0_SkyMare/Data/New Data";
 
        
-        public void LoadNewPicture( List <SpriteInfor> infors, string psBName)
+        public void LoadOldData()
         {
-            spriteInfors = new List<SpriteInfor>(infors);
-            fileName = psBName;
-            // Ghép đường dẫn đầy đủ đến file asset
-            string fullPath = Path.Combine(picDataPath, psBName + ".asset");
-
-            // Kiểm tra file có tồn tại trong project không
-            Object obj = AssetDatabase.LoadAssetAtPath<Object>(fullPath);
-            if (obj == null)
-            {
-                Debug.LogWarning($"❌ Không tìm thấy asset: {fullPath}");
-                picData = null;
-            }
-            else
-            {
-                PicData so = obj as PicData;
-                if (so != null)
-                {
-                    picData = so;
-                }
-            }
-            reloadData.gameObject.SetActive(picData != null);
-            // Kiểm tra có phải ScriptableObject không
-
-
-            paintingData.LoadNewPicture(infors);
-            keyLock.Clear();
-            //tileManager.ReLoad(ExpandGrid(levelData.grid));
-            storgeManager.Clear();
-            tileManager.Clear();
-        }
-
-        public void LoadDataToTool()
-        {
-            if (picData.levelData == null) return;
-
-            paintingData.LoadPaintingByData(picData.levelData.painting);
-
-            tileManager.ReLoad(ExpandGrid(picData.levelData.grid));
+            tube.LoadNewTube(levelDataLoader.selectedLevelData.tubes);
+            tileManager.ReLoad(ExpandGrid());
 
             LoadPrePareToCouple();
 
-            storgeManager.GenData(picData.levelData.storge);
+            storgeManager.GenData(levelDataLoader.selectedLevelData.storge);
+   
         }
+        public void NewLevel()
+        {
+            storgeManager.Clear();
+            tileManager.Clear();
+            tube.Clear();
+        }
+       
 
         private void Export()
         {
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            // 1️⃣ Đảm bảo folder tồn tại
-            Directory.CreateDirectory(levelDataPath);
-            Directory.CreateDirectory(picDataPath);
-
-            // 2️⃣ Tạo ScriptableObjectA mới và gán text
-            LevelData newData = ScriptableObject.CreateInstance<LevelData>();
-            newData.storge = new Data.Storge(storgeManager);
-            newData.painting = new Data.Painting(paintingData);
-            newData.grid = TrimGrid(tileManager.Grid());
-            SaveGrid(newData.grid, newData);
-
-
-            string assetName = $"{fileName.ToUpper()}_save_at_{timestamp}";
-            string assetAPath = Path.Combine(levelDataPath, assetName + ".asset");
-            AssetDatabase.CreateAsset(newData, assetAPath);
-            Debug.Log("Đã tạo ScriptableObjectA tại: " + assetAPath);
-
-            // 3️⃣ Kiểm tra ScriptableObjectB đã tồn tại chưa
-            string assetBPath = Path.Combine(picDataPath, fileName + ".asset");
-            //ScriptableObjectB dataB = AssetDatabase.LoadAssetAtPath<ScriptableObjectB>(assetBPath);
-
-            if (picData == null)
+            if (isNewLevel)
             {
-                // 4️⃣ Nếu chưa có → tạo mới
-                picData = ScriptableObject.CreateInstance<PicData>();
-                picData.levelData = newData;
-                picData.currentSprites = spriteInfors;
-                AssetDatabase.CreateAsset(picData, assetBPath);
-                Debug.Log("Đã tạo ScriptableObjectB mới tại: " + assetBPath);
+                Directory.CreateDirectory(levelDataPath);
+
+                SandLevelData newData = ScriptableObject.CreateInstance<SandLevelData>();
+                newData.storge = new Storge(storgeManager);
+
+                newData.tubes = tube.GetList();
+                newData.grid = TrimGrid(tileManager.Grid());
+                SaveGrid(newData.grid, newData);
+
+
+                string assetName = $"{fileName.ToUpper()}";
+                string assetAPath = Path.Combine(levelDataPath, assetName + ".asset");
+                AssetDatabase.CreateAsset(newData, assetAPath);
+                Debug.Log("Đã tạo ScriptableObjectA tại: " + assetAPath);
+
+                // 6️⃣ Lưu lại database
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                Debug.Log("✅ Export hoàn tất!");
             }
             else
             {
-                // 5️⃣ Nếu có rồi → gán A mới vào
-                picData.levelData = newData;
-                picData.currentSprites = spriteInfors;
-                EditorUtility.SetDirty(newData);
-                Debug.Log("Đã cập nhật ScriptableObjectB tại: " + assetBPath);
-            }
+                SandLevelData newData = levelDataLoader.selectedLevelData;
 
-            // 6️⃣ Lưu lại database
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Debug.Log("✅ Export hoàn tất!");
+                // ⭐ Cập nhật dữ liệu mới vào level cũ
+                newData.storge = new Storge(storgeManager);
+                newData.tubes = tube.GetList();
+                newData.grid = TrimGrid(tileManager.Grid());
+                SaveGrid(newData.grid, newData);
+
+                // Đánh dấu là đã thay đổi
+                EditorUtility.SetDirty(newData);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                Debug.Log("✅ Đã cập nhật level: " + newData.name);
+            }
+            
         }
         public void CreateScriptableObjectInEditor()
         {
@@ -140,7 +145,7 @@ namespace ToolLevel
     Debug.LogWarning("Chỉ có thể tạo ScriptableObject trong Unity Editor!");
 #endif
         }
-        public async void SaveGrid(string[,] grid, LevelData levelData)
+        public async void SaveGrid(string[,] grid, SandLevelData levelData)
         {
             // Tạo timestamp tránh ký tự không hợp lệ
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -189,6 +194,7 @@ namespace ToolLevel
             levelData.gridDataFile = textAsset;
 
             Debug.Log($"✅ Đã tạo file mới tại: {fullPath}");
+            levelDataLoader.RefreshLevelDataList();
         }
         /// <summary>
         /// Loại bỏ các hàng và cột chỉ chứa toàn số 0 từ mảng 2 chiều
@@ -292,12 +298,9 @@ namespace ToolLevel
         /// <param name="offsetRow">Vị trí hàng bắt đầu đặt grid (mặc định 0)</param>
         /// <param name="offsetCol">Vị trí cột bắt đầu đặt grid (mặc định 0)</param>
         /// <returns>Grid mới với kích thước cố định</returns>
-        public string[,] ExpandGrid(string[,] trimmedGrid, int targetRows = 10, int targetCols = 10)
+        public string[,] ExpandGrid( int targetRows = 10, int targetCols = 10)
         {
-            if (trimmedGrid == null || trimmedGrid.Length == 0)
-            {
-                trimmedGrid = picData.levelData.TxTToGrid();
-            }
+            var trimmedGrid = levelDataLoader.selectedLevelData.TxTToGrid();
 
             int trimRows = trimmedGrid.GetLength(0);
             int trimCols = trimmedGrid.GetLength(1);

@@ -21,7 +21,7 @@ namespace ToolLevel
             if(this.infor == null)
             {
                 isReady = true;
-                this.infor = Instantiate(ToolManager.I.paintingInfor);
+                //this.infor = Instantiate(ToolManager.I.paintingInfor);
                 this.infor.transform.SetParent(transform);
                 if (local)
                 {

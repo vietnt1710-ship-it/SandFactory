@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/0_SkyMare/Scenes/Main.unity
-    guid: 23c3173f0097f894cba6c1421956ac42
+    path: Assets/0_SkyMare/Scenes/Main 1.unity
+    guid: 2dce6ed4edda7ff41be31c07ce74d43a
   m_configObjects: {}

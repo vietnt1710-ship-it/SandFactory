@@ -1,4 +1,4 @@
-using Data;
+﻿using Data;
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,24 +100,43 @@ namespace ToolLevel
             tile.UpdateAmount();
         }
 
-        public void GenData( Dictionary<int, int> _amounts )
+        public void GenData(Dictionary<int, int> _amounts)
         {
             //Clear();
-            foreach ( var item in _amounts )
+
+            // Danh sách các tiles cần xóa
+            List<TileData> tilesToRemove = new List<TileData>();
+
+            // Kiểm tra các tiles hiện có
+            foreach (var t in tiles)
+            {
+                if (!_amounts.ContainsKey(t.colorID))
+                {
+                    tilesToRemove.Add(t);
+                }
+            }
+
+            // Xóa các tiles không còn trong _amounts
+            foreach (var t in tilesToRemove)
+            {
+                t.UpdateStorge(0);
+            }
+
+            // Cập nhật hoặc tạo mới tiles
+            foreach (var item in _amounts)
             {
                 var t = tiles.FirstOrDefault(t => t.colorID == item.Key);
-                if( t == null)
+                if (t == null)
                 {
-                    t =  Instantiate(tileData, Vector3.zero, tileData.transform.rotation);
+                    t = Instantiate(tileData, Vector3.zero, tileData.transform.rotation);
                     tiles.Add(t);
                     t.transform.SetParent(transform);
                     t.gameObject.SetActive(true);
                     t.Init(item.Key, item.Value, datas.colorWithIDs[item.Key - 1].color);
                 }
-
                 t.UpdateStorge(item.Value);
-
             }
+
             grid.Fit();
             isFetched = true;
         }

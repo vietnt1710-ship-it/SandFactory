@@ -22,19 +22,19 @@ namespace ToolLevel
             if (!isInputting) return;
 
             // Kiểm tra các phím số (0-9)
-            for (int i = 0; i <= 9; i++)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha0 + i) || Input.GetKeyDown(KeyCode.Keypad0 + i))
-                {
-                    AddDigit(i.ToString());
-                }
-            }
+            //for (int i = 0; i <= 9; i++)
+            //{
+            //    if (Input.GetKeyDown(KeyCode.Alpha0 + i) || Input.GetKeyDown(KeyCode.Keypad0 + i))
+            //    {
+            //        AddDigit(i.ToString());
+            //    }
+            //}
 
-            // Kiểm tra phím Backspace để xóa
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                RemoveLastDigit();
-            }
+            //// Kiểm tra phím Backspace để xóa
+            //if (Input.GetKeyDown(KeyCode.Backspace))
+            //{
+            //    RemoveLastDigit();
+            //}
 
             // Kiểm tra Enter hoặc Space để xác nhận
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))

@@ -17,7 +17,6 @@ namespace ToolLevel
         public PaintingData painting;
         public void LoadColor()
         {
-           
             Clear();
 
             for (int i = 0; i < data.colorWithIDs.Count; i++)

@@ -98,7 +98,7 @@ namespace ToolLevel
             selectedPSBName = psbFileNames[index];
             LoadSpritesFromPSB(selectedPSBName);
 
-            ToolManager.I.LoadNewPicture(currentSprites, selectedPSBName);
+            //ToolManager.I.LoadNewPicture(currentSprites, selectedPSBName);
 #endif
         }
 
@@ -172,66 +172,12 @@ namespace ToolLevel
                 }
             }
 
-            //// 2) Tạo SpriteInfor cho từng Sprite (gán position nếu tìm được theo tên)
-            //foreach (var sp in spriteList)
-            //{
-            //    var si = new SpriteInfor();
-            //    si.sprite = sp;
-
-            //    // Nếu có GameObject có cùng tên thì gán vị trí
-            //    if (positions.TryGetValue(sp.name, out Vector2 pos))
-            //    {
-            //        si.localPosition = pos;
-            //    }
-            //    // Nếu bạn cần biết liệu position có tồn tại thực sự hay không,
-            //    // cân nhắc thêm 1 biến bool trong SpriteInfor như `hasPosition`.
-
-            //    currentSprites.Add(si);
-            //}
 
             Debug.Log($"Loaded {currentSprites.Count} sprites từ {psbName}");
 #endif
         }
 
-        //// Lấy sprite theo index từ PSB hiện tại
-        //public Sprite GetSprite(int index)
-        //{
-        //    if (index >= 0 && index < currentSprites.Count)
-        //    {
-        //        return currentSprites[index];
-        //    }
-        //    Debug.LogWarning($"Index {index} nằm ngoài phạm vi!");
-        //    return null;
-        //}
 
-        // Lấy sprite theo tên từ PSB hiện tại
-        //public Sprite GetSpriteByName(string spriteName)
-        //{
-        //    Sprite sprite = currentSprites.Find(s => s.name == spriteName);
-        //    if (sprite == null)
-        //    {
-        //        Debug.LogWarning($"Không tìm thấy sprite: {spriteName}");
-        //    }
-        //    return sprite;
-        //}
-
-        // Lấy tất cả sprites có tên chứa keyword
-        //public List<Sprite> GetSpritesByKeyword(string keyword)
-        //{
-        //    return currentSprites.Where(s => s.name.Contains(keyword)).ToList();
-        //}
-
-        // Hiển thị danh sách tất cả sprites từ PSB hiện tại
-        //public void PrintAllSpriteNames()
-        //{
-        //    Debug.Log($"=== Sprites trong {selectedPSBName} ===");
-        //    for (int i = 0; i < currentSprites.Count; i++)
-        //    {
-        //        Debug.Log($"[{i}] {currentSprites[i].name}");
-        //    }
-        //}
-
-        // Refresh lại danh sách PSB
         public void RefreshPSBList()
         {
             LoadPSBList();

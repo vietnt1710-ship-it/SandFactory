@@ -12,6 +12,8 @@ namespace ToolLevel
         public int selectID;
         public Color selectColor;
         public Image selectExample;
+        public Sprite hiddenSprite;
+        public TubeToolLevel tubes;
 
         [Header("Canvas Settings")]
         [SerializeField] private Canvas canvas;
@@ -30,7 +32,7 @@ namespace ToolLevel
 
         public void Start()
         {
-            ChangeSelect(0);
+            ChangeSelect(1);
             InitButton();
             SetupRaycast();
         }
@@ -47,14 +49,14 @@ namespace ToolLevel
                 newBtn.GetComponent<Image>().color = colorIDs.colorWithIDs[i].color;
 
                 int index = i;
-                newBtn.onClick.AddListener(() => { ChangeSelect(index); });
+                newBtn.onClick.AddListener(() => { ChangeSelect(index + 1); });
             }
         }
 
         public void ChangeSelect(int colorID)
         {
             selectID = colorID;
-            selectColor = colorIDs.colorWithIDs[selectID].color;
+            selectColor = colorIDs.colorWithIDs[selectID - 1].color;
             selectExample.color = selectColor;
         }
 
@@ -71,8 +73,22 @@ namespace ToolLevel
             targetLayer = LayerMask.NameToLayer(targetLayerName);
         }
 
+        bool isHidden = false;
+        public Image hidden;
+
+        bool isInsert = false;
         void Update()
         {
+            if(Input.GetKeyDown(KeyCode.H))
+            {
+                isHidden = !isHidden;
+                hidden.gameObject.SetActive(isHidden);
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                isInsert = !isInsert;
+                Debug.Log("Insert is " +( isInsert ? "ON" : "OFF"));
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 dragStartPosition = Input.mousePosition;
@@ -120,24 +136,43 @@ namespace ToolLevel
                         // Kiểm tra double click chỉ khi là click, không phải drag
                         if (Time.time - lastClickTime < doubleClickThreshold)
                         {
-                            // Double click - reset màu
-                            image.color = new Color(55f / 255f, 55f / 255f, 55f / 255f);
+                            ImageRemoveHandle(image);
                         }
                         else
                         {
-                            // Click đơn - đổi màu
-                            image.color = selectColor;
+                            ImageHandel(image);
                         }
                         lastClickTime = Time.time;
                     }
                     else
                     {
                         // Drag - chỉ đổi màu, không kiểm tra double click
-                        image.color = selectColor;
+                        ImageHandel(image);
                     }
                     break;
                 }
             }
+        }
+        public void ImageHandel(Image image)
+        {
+            image.color = selectColor;
+            if (isHidden)
+            {
+                image.sprite = hiddenSprite;
+                image.name = (-selectID).ToString();
+            }
+            else
+            {
+                image.sprite = null;
+                image.name = selectID.ToString();
+            }
+        }
+        public void ImageRemoveHandle(Image image)
+        {
+            // Double click - reset màu
+            image.color = new Color(55f / 255f, 55f / 255f, 55f / 255f);
+            image.sprite = null;
+            image.name = "None";
         }
     }
 }

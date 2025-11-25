@@ -109,7 +109,7 @@ namespace ToolLevel
                 pd.id = piece.id;
                 //pieces.Add(pd);
 
-                pd.InitInfor(piece._colorID, ToolManager.I.ColorWithID(piece._colorID), piece.textPosition, piece._amount, true);
+                //pd.InitInfor(piece._colorID, ToolManager.I.ColorWithID(piece._colorID), piece.textPosition, piece._amount, true);
 
             }
             LoadNeighBors(data);
