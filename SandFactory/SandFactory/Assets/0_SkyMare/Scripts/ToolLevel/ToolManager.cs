@@ -27,6 +27,7 @@ namespace ToolLevel
 
         public Button btn_LoadLevel;
         public Button btn_NewLevel;
+        public Button btn_ClearAndNew;
         public Button btn_Clear;
         public TMP_Text levelText;
         bool isNewLevel = true;
@@ -36,6 +37,7 @@ namespace ToolLevel
         {
             btn_LoadLevel.onClick.AddListener(LoadSelectLevel);
             btn_NewLevel.onClick.AddListener(CreateNewLevel);
+            btn_ClearAndNew.onClick.AddListener(ClearAndNew);
             btn_Clear.onClick.AddListener(Clear);
 
             levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
@@ -56,12 +58,20 @@ namespace ToolLevel
             levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
             fileName = $"LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
         }
-        public void Clear()
+        public void ClearAndNew()
         {
             isNewLevel = true;
 
             levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
             fileName = $"LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
+
+            NewLevel();
+        }
+        public void Clear()
+        {
+            isNewLevel = false;
+
+            levelText.text = $"{levelDataLoader.selectedLevelData.name}";
 
             NewLevel();
         }

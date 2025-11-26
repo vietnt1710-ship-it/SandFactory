@@ -74,20 +74,28 @@ namespace ToolLevel
         }
 
         bool isHidden = false;
-        public Image hidden;
+        public GameObject hiddenIcon;
 
         bool isInsert = false;
+        public GameObject insertIcon;
+        bool isDeleteMode = false;
+        public GameObject deleteIcon;
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.H))
             {
                 isHidden = !isHidden;
-                hidden.gameObject.SetActive(isHidden);
+                hiddenIcon.gameObject.SetActive(isHidden);
             }
             if (Input.GetKeyDown(KeyCode.I))
             {
                 isInsert = !isInsert;
-                Debug.Log("Insert is " +( isInsert ? "ON" : "OFF"));
+                insertIcon.gameObject.SetActive(isInsert);
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                isDeleteMode = !isDeleteMode;
+                deleteIcon.gameObject.SetActive(isDeleteMode);
             }
             if (Input.GetMouseButtonDown(0))
             {
@@ -140,14 +148,30 @@ namespace ToolLevel
                         }
                         else
                         {
-                            ImageHandel(image);
+                            if (isDeleteMode)
+                            {
+                                ImageRemoveHandle(image);
+                            }
+                            else
+                            {
+                                ImageHandel(image);
+                            }
+                           
                         }
                         lastClickTime = Time.time;
                     }
                     else
                     {
                         // Drag - chỉ đổi màu, không kiểm tra double click
-                        ImageHandel(image);
+                     
+                        if (isDeleteMode)
+                        {
+                            ImageRemoveHandle(image);
+                        }
+                        else
+                        {
+                            ImageHandel(image);
+                        }
                     }
                     break;
                 }
