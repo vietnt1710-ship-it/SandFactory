@@ -45,17 +45,39 @@ public class LevelDataLoader : MonoBehaviour
 
             if (levelData != null)
             {
-                string levelName = levelData.name; // Lấy tên asset (ví dụ: LEVEL_1)
+                string levelName = levelData.name;
                 levelDataNames.Add(levelName);
                 levelDataDictionary.Add(levelName, levelData);
             }
         }
 
-        // Sắp xếp theo tên (tùy chọn)
-        levelDataNames.Sort();
+        // Sắp xếp theo số level thực sự (LEVEL_1, LEVEL_2, ..., LEVEL_10, LEVEL_11)
+        levelDataNames = levelDataNames
+            .OrderBy(name => ExtractLevelNumber(name))
+            .ToList();
 
         Debug.Log($"Tìm thấy {levelDataNames.Count} Level Data");
 #endif
+    }
+
+    // Trích xuất số level từ tên (VD: "LEVEL_10" -> 10)
+    int ExtractLevelNumber(string levelName)
+    {
+        // Tìm vị trí của dấu gạch dưới cuối cùng
+        int lastUnderscoreIndex = levelName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex >= 0 && lastUnderscoreIndex < levelName.Length - 1)
+        {
+            string numberPart = levelName.Substring(lastUnderscoreIndex + 1);
+
+            if (int.TryParse(numberPart, out int levelNumber))
+            {
+                return levelNumber;
+            }
+        }
+
+        // Nếu không parse được, trả về 0 (sẽ đứng đầu)
+        return 0;
     }
 
     // Setup dropdown với danh sách Level Data
