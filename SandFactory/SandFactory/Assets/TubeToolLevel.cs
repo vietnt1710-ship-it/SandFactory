@@ -21,6 +21,8 @@ namespace ToolLevel
             Btn_gen.onClick.AddListener(Gen);
             btn_RandomTube.onClick.AddListener(RandomTube);
         }
+
+
         [Range(0f, 7f)]
         public int hardLevel;
 
@@ -37,99 +39,101 @@ namespace ToolLevel
             }
 
             // Lọc các màu có ID <= numberOfColorsInLevel
-            List<ColorWithID> selectedColors = new List<ColorWithID>();
+            List<ColorWithID> availableColors = new List<ColorWithID>();
             foreach (var color in colorIDs.colorWithIDs)
             {
                 if (color.ID <= numberOfColorsInLevel)
                 {
-                    selectedColors.Add(color);
+                    availableColors.Add(color);
                 }
             }
 
             // Nếu không có màu nào phù hợp, return
-            if (selectedColors.Count == 0)
+            if (availableColors.Count == 0)
             {
                 Debug.LogWarning("Không có màu nào có ID <= " + numberOfColorsInLevel);
                 return;
             }
 
-            // Tính số lần lặp lại cho mỗi màu dựa vào hardLevel
-            // Độ khó thấp: mỗi màu lặp lại nhiều lần
-            // Độ khó cao: mỗi màu lặp lại ít lần hơn
-            int minRepeatsPerColor;
-            int maxRepeatsPerColor;
+            // Tính số màu sẽ thực sự được sử dụng dựa vào hardLevel
+            int actualNumberOfColors;
 
-            if (hardLevel <= 2)
+            if (hardLevel <= 1)
             {
-                minRepeatsPerColor = 9;   // Level dễ: 9-15 lần
-                maxRepeatsPerColor = 15;
+                actualNumberOfColors = Mathf.Min(UnityEngine.Random.Range(2, 4), availableColors.Count);
             }
-            else if (hardLevel <= 4)
+            else if (hardLevel <= 3)
             {
-                minRepeatsPerColor = 6;   // Level trung bình: 6-12 lần
-                maxRepeatsPerColor = 12;
+                actualNumberOfColors = Mathf.Min(UnityEngine.Random.Range(3, 5), availableColors.Count);
             }
-            else if (hardLevel <= 6)
+            else if (hardLevel <= 5)
             {
-                minRepeatsPerColor = 3;   // Level khó: 3-9 lần
-                maxRepeatsPerColor = 9;
+                actualNumberOfColors = Mathf.Min(UnityEngine.Random.Range(4, 7), availableColors.Count);
             }
             else
             {
-                minRepeatsPerColor = 3;   // Level rất khó: 3-6 lần
-                maxRepeatsPerColor = 6;
+                actualNumberOfColors = Mathf.Min(UnityEngine.Random.Range(6, availableColors.Count + 1), availableColors.Count);
             }
 
-            // Tính toán số lần lặp cho mỗi màu sao cho tổng gần bằng tubeItems.Count
-            int targetTotal = tubeItems.Count;
-            int[] repeatsForEachColor = new int[selectedColors.Count];
+            actualNumberOfColors = Mathf.Max(2, actualNumberOfColors);
 
-            // Khởi tạo mỗi màu với số lần tối thiểu
-            int currentTotal = 0;
-            for (int i = 0; i < selectedColors.Count; i++)
+            // Chọn ngẫu nhiên các màu từ availableColors
+            List<ColorWithID> selectedColors = new List<ColorWithID>();
+            List<ColorWithID> tempAvailable = new List<ColorWithID>(availableColors);
+
+            for (int i = 0; i < actualNumberOfColors && tempAvailable.Count > 0; i++)
             {
-                repeatsForEachColor[i] = minRepeatsPerColor;
-                currentTotal += minRepeatsPerColor;
+                int randomIndex = UnityEngine.Random.Range(0, tempAvailable.Count);
+                selectedColors.Add(tempAvailable[randomIndex]);
+                tempAvailable.RemoveAt(randomIndex);
             }
 
-            // Thêm dần cho đến khi đạt gần targetTotal (và vẫn chia hết cho 3)
-            int colorIndex = 0;
-            while (currentTotal < targetTotal)
+            // Xác định số lần lặp cho mỗi màu dựa vào hardLevel
+            int repeatsPerColor;
+
+            if (hardLevel <= 2)
             {
-                // Kiểm tra xem có thể thêm 3 không
-                if (currentTotal + 3 <= targetTotal && repeatsForEachColor[colorIndex] + 3 <= maxRepeatsPerColor)
-                {
-                    repeatsForEachColor[colorIndex] += 3;
-                    currentTotal += 3;
-                }
-
-                colorIndex = (colorIndex + 1) % selectedColors.Count;
-
-                // Nếu không thể thêm nữa, break
-                bool canAddMore = false;
-                for (int i = 0; i < selectedColors.Count; i++)
-                {
-                    if (repeatsForEachColor[i] + 3 <= maxRepeatsPerColor && currentTotal + 3 <= targetTotal)
-                    {
-                        canAddMore = true;
-                        break;
-                    }
-                }
-
-                if (!canAddMore)
-                {
-                    break;
-                }
+                int[] options = { 12, 15, 18 };
+                repeatsPerColor = options[UnityEngine.Random.Range(0, options.Length)];
+            }
+            else if (hardLevel <= 4)
+            {
+                int[] options = { 9, 12 };
+                repeatsPerColor = options[UnityEngine.Random.Range(0, options.Length)];
+            }
+            else if (hardLevel <= 6)
+            {
+                int[] options = { 6, 9 };
+                repeatsPerColor = options[UnityEngine.Random.Range(0, options.Length)];
+            }
+            else
+            {
+                int[] options = { 3, 6 };
+                repeatsPerColor = options[UnityEngine.Random.Range(0, options.Length)];
             }
 
-            // Tạo colorPool với số lần lặp đã tính
+            // Tạo colorPool - mỗi màu xuất hiện repeatsPerColor lần (chia hết cho 3)
             List<ColorWithID> colorPool = new List<ColorWithID>();
-            for (int i = 0; i < selectedColors.Count; i++)
+            foreach (var color in selectedColors)
             {
-                for (int j = 0; j < repeatsForEachColor[i]; j++)
+                for (int j = 0; j < repeatsPerColor; j++)
                 {
-                    colorPool.Add(selectedColors[i]);
+                    colorPool.Add(color);
                 }
+            }
+
+            // Nếu colorPool nhiều hơn tubeItems, bỏ bớt từng nhóm 3 (loại màu hoàn toàn)
+            while (colorPool.Count > tubeItems.Count && selectedColors.Count > 1)
+            {
+                // Chọn 1 màu ngẫu nhiên để loại bỏ
+                int colorIndexToRemove = UnityEngine.Random.Range(0, selectedColors.Count);
+                ColorWithID colorToRemove = selectedColors[colorIndexToRemove];
+
+                // Xóa tất cả instances của màu đó khỏi colorPool
+                colorPool.RemoveAll(c => c.ID == colorToRemove.ID);
+
+                // Xóa màu khỏi selectedColors
+                selectedColors.RemoveAt(colorIndexToRemove);
             }
 
             // Trộn ngẫu nhiên colorPool
@@ -142,24 +146,14 @@ namespace ToolLevel
             }
 
             // Gán màu cho tubeItems
-            for (int i = 0; i < colorPool.Count && i < tubeItems.Count; i++)
+            int itemsToFill = Mathf.Min(colorPool.Count, tubeItems.Count);
+            for (int i = 0; i < itemsToFill; i++)
             {
                 tubeItems[i].sprite = null;
                 tubeItems[i].name = colorPool[i].ID.ToString();
                 tubeItems[i].color = colorPool[i].color;
             }
-
-            // Nếu còn thiếu (rất hiếm khi xảy ra), fill bằng màu ngẫu nhiên từ selectedColors
-            for (int i = colorPool.Count; i < tubeItems.Count; i++)
-            {
-                var randomColor = selectedColors[UnityEngine.Random.Range(0, selectedColors.Count)];
-                tubeItems[i].sprite = null;
-                tubeItems[i].name = randomColor.ID.ToString();
-                tubeItems[i].color = randomColor.color;
-            }
         }
-
-        
         public void LoadNewTube(List<int>ids)
         {
             for (int i = 0; i < tubeItems.Count; i++)

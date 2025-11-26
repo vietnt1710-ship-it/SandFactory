@@ -1,6 +1,7 @@
 ﻿using Data;
 using DG.Tweening;
 using System.Collections.Generic;
+using System.ComponentModel;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
@@ -457,9 +458,11 @@ namespace ToolLevel
         }
         public void Clear()
         {
+            isPipe = false;
             type = Type._default;
             value = "0";
             jar.gameObject.SetActive(false);
+            mainMesh.gameObject.SetActive(true);
             gara.SetActive(false);
         }
         void LoadPipe(string be, string af)
