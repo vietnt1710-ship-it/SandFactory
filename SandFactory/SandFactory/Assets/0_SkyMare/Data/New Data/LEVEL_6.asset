@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d60cb8d18cb9e4eb2e181d10a51e34, type: 3}
+  m_Name: LEVEL_6
+  m_EditorClassIdentifier: 
+  tubes: 010000000600000009000000040000000600000001000000010000000600000009000000090000000100000004000000040000000100000006000000010000000400000006000000060000000400000004000000090000000400000009000000040000000900000006000000040000000600000004000000060000000100000009000000090000000100000001000000090000000600000004000000040000000600000006000000040000000900000009000000040000000900000004000000
+  storge:
+    storgeItems:
+    - _colorID: 1
+      storgeValue: 3
+    - _colorID: 6
+      storgeValue: 4
+    - _colorID: 9
+      storgeValue: 4
+    - _colorID: 4
+      storgeValue: 5
+  gridDataFile: {fileID: 4900000, guid: 4fd96b77d19531a46921223511cbff10, type: 3}
