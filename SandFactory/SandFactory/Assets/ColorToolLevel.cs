@@ -7,6 +7,7 @@ namespace ToolLevel
 {
     public class ColorToolLevel : MonoBehaviour
     {
+        public List<Button> buttonColors = new List<Button>();  
         public Button prefabsButton;
         public ColorID colorIDs;
         public int selectID;
@@ -50,6 +51,8 @@ namespace ToolLevel
 
                 int index = i;
                 newBtn.onClick.AddListener(() => { ChangeSelect(index + 1); });
+                newBtn.name = (index + 1).ToString();
+                buttonColors.Add(newBtn);
             }
         }
 
