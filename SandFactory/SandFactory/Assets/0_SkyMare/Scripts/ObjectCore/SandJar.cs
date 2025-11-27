@@ -58,7 +58,7 @@ public class SandJar : MonoBehaviour
 
         jar.ChangeColor(color);
         jar.cap.material.color = Color.gray;
-        jar.cap_Border.material.color = Color.gray;
+        jar.bottle.materials[2].color = Color.gray;
 
     }
     public void ApplyFrezzWaittingJar(int colorID, ColorWithID color, int sandAmount, int row)
@@ -143,7 +143,7 @@ public class SandJar : MonoBehaviour
     {
         hiddenSprite.DOFade(0, 0.5f);
         jar.cap.material.DOColor(color.capColor, 0.5f);
-        jar.cap_Border.material.DOColor(color.capColor, 0.5f);
+        jar.bottle.materials[2].DOColor(color.capColor, 0.5f);
     }
     public void KeyStackDone()
     {

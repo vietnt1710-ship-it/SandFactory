@@ -6,9 +6,10 @@ public class HolderColorManager : MonoBehaviour
 {
     public MeshRenderer liquid;
     public MeshRenderer cap;
-    public MeshRenderer cap_Border;
-    public ParticleSystem pourEffect;
-    public ParticleSystem cloneFX;
+    public MeshRenderer bottle;
+    //public MeshRenderer cap_Border;
+    //public ParticleSystem pourEffect;
+    //public ParticleSystem cloneFX;
 
     [Header("Test")]
     public ColorID colors;
@@ -39,12 +40,13 @@ public class HolderColorManager : MonoBehaviour
 
         cap.materials[0].color = color.capColor;
         cap.materials[1].SetColor("_OutLine_Color", color.capOutlineColor);
+        bottle.materials[2].color = color.capColor;
 
-        cloneFX = Instantiate(pourEffect);//.main; // Get the module from the ParticleSystem instance
-        cloneFX.startColor = color.liquidColor;
-        cloneFX.gameObject.transform.SetParent(pourEffect.transform.parent);
-        cloneFX.gameObject.transform.localPosition = pourEffect.transform.localPosition;
+        //cloneFX = Instantiate(pourEffect);//.main; // Get the module from the ParticleSystem instance
+        //cloneFX.startColor = color.liquidColor;
+        //cloneFX.gameObject.transform.SetParent(pourEffect.transform.parent);
+        //cloneFX.gameObject.transform.localPosition = pourEffect.transform.localPosition;
 
-        cap_Border.material.color = color.capColor;
+        //cap_Border.material.color = color.capColor;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Data;
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,8 +27,14 @@ public class Tube : MonoBehaviour
     public SegmentedColoredPipe segmentedColoredPipe;
     public void Start()
     {
+       
+    }
+    public void LoadLevelData(SandLevelData data)
+    {
+        passengerIndexs = new List<int>(data.tubes);
         GeneratePassenger();
     }
+
     Tween waterTween;
     public void FillWater(float target, float duration, float delay = 0f)
     {
@@ -148,6 +155,7 @@ public class Tube : MonoBehaviour
   
     public void GeneratePassenger()
     {
+        segmentedColoredPipe.ClearAll();
         //List<Color> cls = new List<Color>()
         List<int> cls = new List<int>();
         for (int i = passengerIndexs.Count -1 ; i >= 0; i--)

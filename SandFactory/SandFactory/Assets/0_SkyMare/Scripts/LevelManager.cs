@@ -1,3 +1,4 @@
+using Data;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    public PicData data;
+    public SandLevelData data;
     public StackManager m_stackManager;
     public Painting m_painting;
     public StackManager m_stack;
@@ -36,8 +37,8 @@ public class LevelManager : Singleton<LevelManager>
     }
     public void LoadLevel()
     {
-        m_painting.LoadPainting(data);
-        m_mazeGenerate.LoadLevel(data.levelData.TxTToGrid());
+        tube.LoadLevelData(data);
+        m_mazeGenerate.LoadLevel(data.TxTToGrid());
     }
     public void ClearLevel()
     {

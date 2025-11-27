@@ -38,17 +38,19 @@ public class Wobble : MonoBehaviour
         float currentAngle = transform.eulerAngles.z;
         if (currentAngle > 180) currentAngle -= 360;
         float progress = Mathf.InverseLerp(startPourWaterAngle, endPourWaterAngle, currentAngle);
-        if(progress > 0 && !colorManager.cloneFX.gameObject.activeSelf) colorManager.cloneFX.gameObject.SetActive(true);
+        //if(progress > 0 && !colorManager.cloneFX.gameObject.activeSelf) colorManager.cloneFX.gameObject.SetActive(true);
+
+
             float fillLevel = Mathf.Lerp(highestFill, lowestFill, progress);
 
         rend.material.SetFloat("_Fill", fillLevel);
     }
     public void CutWobble()
     {
-        cutted = true;
-        MaxWobble = 0.003f;
-        WobbleSpeed = 0.05f;
-        Recovery = 10f;
+        //cutted = true;
+        //MaxWobble = 0.003f;
+        //WobbleSpeed = 0.05f;
+        //Recovery = 10f;
     }
     void Start()
     {
@@ -74,11 +76,11 @@ public class Wobble : MonoBehaviour
         float targetA = lowestFill  + value * process;
 
 
-        DOVirtual.DelayedCall(duration * 0.75f, () =>
-        {
-            wobbleToAddX = 0.25f;
-            wobbleToAddZ = 0.25f;
-        });
+        //DOVirtual.DelayedCall(duration * 0.75f, () =>
+        //{
+        //    wobbleToAddX = 0.25f;
+        //    wobbleToAddZ = 0.25f;
+        //});
 
         Sequence seq = DOTween.Sequence();
         seq.Append(DOTween.To(() => valueA, x => valueA = x, targetA, duration)

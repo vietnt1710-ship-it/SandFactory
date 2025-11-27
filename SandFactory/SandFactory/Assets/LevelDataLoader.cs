@@ -25,7 +25,7 @@ public class LevelDataLoader : MonoBehaviour
     void Awake()
     {
         LoadLevelDataList();
-        SetupDropdown();
+        SetupDropdown(true);
     }
 
     // Load danh sách tất cả SandLevelData ScriptableObjects
@@ -81,7 +81,7 @@ public class LevelDataLoader : MonoBehaviour
     }
 
     // Setup dropdown với danh sách Level Data
-    void SetupDropdown()
+    void SetupDropdown(bool first = false)
     {
         if (levelDropdown == null)
         {
@@ -95,11 +95,15 @@ public class LevelDataLoader : MonoBehaviour
         // Lắng nghe sự kiện thay đổi
         levelDropdown.onValueChanged.AddListener(OnLevelDataSelected);
 
-        // Tự động chọn level đầu tiên nếu có
-        if (levelDataNames.Count > 0)
+        if (first)
         {
-            OnLevelDataSelected(0);
+            if (levelDataNames.Count > 0)
+            {
+                OnLevelDataSelected(0);
+            }
         }
+        // Tự động chọn level đầu tiên nếu có
+      
     }
 
     // Khi chọn Level Data từ dropdown

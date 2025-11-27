@@ -48,6 +48,7 @@ namespace ToolLevel
             isNewLevel = false;
 
             levelText.text = $"{levelDataLoader.selectedLevelData.name}";
+            fileName = $"{levelDataLoader.selectedLevelData.name}";
 #if UNITY_EDITOR
             LoadOldData();
 #endif
@@ -76,7 +77,7 @@ namespace ToolLevel
             isNewLevel = false;
 
             levelText.text = $"{levelDataLoader.selectedLevelData.name}";
-
+            fileName = $"{levelDataLoader.selectedLevelData.name}";
 #if UNITY_EDITOR
             NewLevel();
 #endif

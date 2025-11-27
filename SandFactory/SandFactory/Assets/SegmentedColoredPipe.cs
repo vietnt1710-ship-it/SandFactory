@@ -686,4 +686,63 @@ public class SegmentedColoredPipe : MonoBehaviour
         Debug.LogWarning("Saving mesh is only supported in the Editor.");
 #endif
     }
+    [ContextMenu("Clear All Data")]
+    public void ClearAllData()
+    {
+        ClearSegments();
+
+        // Clear all path data
+        pathPoints.Clear();
+        pathTangents.Clear();
+        pathNormals.Clear();
+        pathBinormals.Clear();
+
+        // Clear segment index ranges
+        segmentIndexRanges.Clear();
+
+        // Clear color indexes
+        segmentColorIndexs.Clear();
+
+        // Reset initial point count
+        initialPointCount = 0;
+
+        // Clear materials array
+        materials = null;
+
+        // Clear mesh filter reference
+        currentMeshFilter = null;
+
+        Debug.Log("All pipe data cleared!");
+    }
+
+    // Cũng có thể cập nhật hàm ClearSegments hiện tại để xóa mesh hoàn toàn
+    [ContextMenu("Clear Segments")]
+    public void ClearAll()
+    {
+        ClearAllData();
+
+        // Additional cleanup for any remaining mesh components
+        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        foreach (MeshFilter mf in meshFilters)
+        {
+            if (mf.mesh != null)
+            {
+                if (Application.isPlaying)
+                    Destroy(mf.mesh);
+                else
+                    DestroyImmediate(mf.mesh);
+            }
+        }
+
+        // Destroy all child objects
+        foreach (Transform child in transform)
+        {
+            if (Application.isPlaying)
+                Destroy(child.gameObject);
+            else
+                DestroyImmediate(child.gameObject);
+        }
+
+        segmentObjects.Clear();
+    }
 }
