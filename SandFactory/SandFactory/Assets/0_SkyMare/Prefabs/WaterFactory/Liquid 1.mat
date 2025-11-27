@@ -26,8 +26,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Liquid_texture:
+        m_Texture: {fileID: 2800000, guid: 5bb7d3955c176844ab9704bb31d1d12a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MatCap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalFromTexture_1a16bc25925f4d658b0faa7c09b8dce5_Texture_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: c14246b5ad4e8c74a8d65168b76ad97a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:

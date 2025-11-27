@@ -48,8 +48,9 @@ namespace ToolLevel
             isNewLevel = false;
 
             levelText.text = $"{levelDataLoader.selectedLevelData.name}";
-
+#if UNITY_EDITOR
             LoadOldData();
+#endif
         }
         public void CreateNewLevel()
         {
@@ -65,7 +66,10 @@ namespace ToolLevel
             levelText.text = $"NEW LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
             fileName = $"LEVEL_{levelDataLoader.levelDataNames.Count + 1}";
 
+#if UNITY_EDITOR
             NewLevel();
+#endif
+
         }
         public void Clear()
         {
@@ -73,7 +77,9 @@ namespace ToolLevel
 
             levelText.text = $"{levelDataLoader.selectedLevelData.name}";
 
+#if UNITY_EDITOR
             NewLevel();
+#endif
         }
 
         public Color ColorWithID(int colorID)

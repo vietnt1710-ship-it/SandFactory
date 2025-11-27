@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SegmentedColoredPipe : MonoBehaviour
@@ -59,11 +60,10 @@ public class SegmentedColoredPipe : MonoBehaviour
     bool isMoving = false;
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (isMoving) return;
-        //    RemoveVertextList();
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SaveMeshToAsset();
+        }
     }
 
     public void RemoveVertextList(float time, int count = 1)
@@ -650,5 +650,40 @@ public class SegmentedColoredPipe : MonoBehaviour
     public void ClearAllSegments()
     {
         ClearSegments();
+    }
+    
+
+    [ContextMenu("Save Mesh to Asset")]
+    public void SaveMeshToAsset()
+    {
+#if UNITY_EDITOR
+        if (currentMeshFilter == null || currentMeshFilter.sharedMesh == null)
+        {
+            Debug.LogWarning("No mesh to save!");
+            return;
+        }
+
+        // Tạo một mesh mới để lưu vì mesh hiện tại có thể là mesh tạm thời
+        Mesh meshToSave = Instantiate(currentMeshFilter.sharedMesh);
+
+        // Đảm bảo thư mục tồn tại
+        string folderPath = "Assets/GeneratedMeshes";
+        if (!AssetDatabase.IsValidFolder(folderPath))
+        {
+            AssetDatabase.CreateFolder("Assets", "GeneratedMeshes");
+        }
+
+        // Tạo tên file duy nhất
+        string meshName = "PipeMesh_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+        string assetPath = folderPath + "/" + meshName + ".asset";
+
+        // Lưu mesh
+        AssetDatabase.CreateAsset(meshToSave, assetPath);
+        AssetDatabase.SaveAssets();
+
+        Debug.Log("Mesh saved at: " + assetPath);
+#else
+        Debug.LogWarning("Saving mesh is only supported in the Editor.");
+#endif
     }
 }
