@@ -27,4 +27,4 @@ MonoBehaviour:
       storgeValue: 2
     - _colorID: 4
       storgeValue: 4
-  gridDataFile: {fileID: 0}
+  gridDataFile: {fileID: 4900000, guid: 2550522256828c7488caece98d8fa2ca, type: 3}
