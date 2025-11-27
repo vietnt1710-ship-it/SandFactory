@@ -460,6 +460,7 @@ namespace ToolLevel
         {
             isPipe = false;
             type = Type._default;
+            tileID = "1";
             value = "0";
             jar.gameObject.SetActive(false);
             mainMesh.gameObject.SetActive(true);

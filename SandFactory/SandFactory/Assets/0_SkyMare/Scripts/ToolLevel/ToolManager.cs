@@ -209,6 +209,10 @@ namespace ToolLevel
             TextAsset textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(fullPath);
             levelData.gridDataFile = textAsset;
 
+            EditorUtility.SetDirty(levelData);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
             Debug.Log($"✅ Đã tạo file mới tại: {fullPath}");
             levelDataLoader.RefreshLevelDataList();
         }
