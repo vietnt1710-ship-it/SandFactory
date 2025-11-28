@@ -75,7 +75,7 @@ public class Tube : MonoBehaviour
     {
         int index = passengerIndexs[0] >= 0 ? passengerIndexs[0] - 1 : passengerIndexs[0] + 1;
 
-        float time = (duration * count) * 0.6f;
+        float time = count == 1 ? 0.25f : count == 2 ? 0.6f : 1.1f;//(duration * count) * 0.6f;
         StartPourFx(colors.colorWithIDs[Mathf.Abs(index)].surfaceColor, time);
         waterDrop.material.color = colors.colorWithIDs[Mathf.Abs(index)].color;
         waterDrop.material.SetFloat("_Fill", 0);

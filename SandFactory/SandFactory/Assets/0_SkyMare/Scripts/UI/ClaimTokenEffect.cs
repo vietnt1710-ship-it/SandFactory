@@ -17,7 +17,7 @@ public class ClaimTokenEffect : MonoBehaviour
 {
     [Header("References")]
     public Image sourceImage;
-    private Image targetImage;
+    public Image targetImage;
     private RectTransform tokenLayer;
     private Canvas rootCanvas;
 
@@ -56,6 +56,8 @@ public class ClaimTokenEffect : MonoBehaviour
 
 
         startPos = GetCenterIn(tokenLayer, sourceImage.rectTransform);
+        Debug.Log("Play Effect" + tokenLayer.name);
+        Debug.Log("Play Effect" + targetImage.name);
         endPos = GetCenterIn(tokenLayer, targetImage.rectTransform);
 
         SpawnBurstAndFly(count, firstAction);
