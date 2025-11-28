@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d60cb8d18cb9e4eb2e181d10a51e34, type: 3}
+  m_Name: LEVEL_39
+  m_EditorClassIdentifier: 
+  tubes: 09000000090000000400000009000000070000000a0000000a000000f7fffffffcfffffffbfffffff7ffffff0500000004000000040000000700000009000000050000000900000006000000f7fffffff9fffffff7fffffff9ffffff0900000005000000090000000500000009000000070000000a000000fbfffffffafffffff9ffffff04000000090000000700000009000000090000000500000007000000090000000a00000004000000070000000500000006000000060000000a00000009000000050000000a0000000900000009000000070000000500000009000000070000000a00000009000000070000000900000004000000090000000700000007000000060000000a0000000900000009000000050000000400000005000000090000000600000004000000090000000a00000007000000
+  storge:
+    storgeItems:
+    - _colorID: 9
+      storgeValue: 9
+    - _colorID: 4
+      storgeValue: 3
+    - _colorID: 7
+      storgeValue: 5
+    - _colorID: 10
+      storgeValue: 3
+    - _colorID: 5
+      storgeValue: 4
+    - _colorID: 6
+      storgeValue: 2
+  gridDataFile: {fileID: 4900000, guid: 88cbf15e9ab378c4aa01f5850b6b2440, type: 3}

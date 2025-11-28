@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d60cb8d18cb9e4eb2e181d10a51e34, type: 3}
+  m_Name: LEVEL_37
+  m_EditorClassIdentifier: 
+  tubes: 050000000b0000000b0000000500000003000000f5ffffff0b00000004000000f5fffffff5ffffff08000000f8fffffffdfffffff8ffffff0b000000080000000b000000050000000b00000008000000030000000b00000004000000fcfffffff5fffffffcffffff01000000fcffffffffffffff0b00000005000000fbfffffffdfffffff8fffffffdffffff080000000b00000005000000080000000100000001000000030000000300000008000000fffffffffcfffffffbfffffffcfffffff5fffffff5ffffff01000000050000000b00000001000000010000000b0000000500000008000000050000000400000004000000010000000b0000000b000000080000000b000000010000000100000003000000030000000500000005000000
+  storge:
+    storgeItems:
+    - _colorID: 5
+      storgeValue: 4
+    - _colorID: 11
+      storgeValue: 6
+    - _colorID: 3
+      storgeValue: 3
+    - _colorID: 4
+      storgeValue: 3
+    - _colorID: 8
+      storgeValue: 4
+    - _colorID: 1
+      storgeValue: 4
+    - _colorID: 9
+      storgeValue: 0
+  gridDataFile: {fileID: 4900000, guid: 43bea9ed93bbeaf4b861fa2142b4a643, type: 3}
