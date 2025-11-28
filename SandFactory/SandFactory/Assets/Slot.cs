@@ -16,6 +16,9 @@ public class Slot : MonoBehaviour
     public GameObject lockHolder;
 
     public bool isLock;
+
+  
+
     public void ChangeStatus(bool isLock)
     {
         this.isLock = isLock;

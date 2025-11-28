@@ -177,7 +177,8 @@ public class SanJarAnimation2 : MonoBehaviour
   
     public void JumpToPouringPoint(Transform pouringPoint, Action jumpComplete)
     {
-     
+        ObjectPoolManager.I.Spawn("MiniExp2", jumpFxPos.position);
+
         float baseStartPosY = go_Base.transform.position.y;
         go_Base.DOMoveY(baseStartPosY + 0.075f, 0.1f);
 
@@ -248,6 +249,8 @@ public class SanJarAnimation2 : MonoBehaviour
     }
     public void JumpToStack(Transform stack, Action jumpDone, Action jumpComplete, Transform go_Base = null)
     {
+        ObjectPoolManager.I.Spawn("JumpFx", jumpFxPos.position);
+
         this.go_Base = go_Base;
         Vector3 startPos = transform.position;
 
