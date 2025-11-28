@@ -35,7 +35,7 @@ public class RoundedPolylinePipe : MonoBehaviour
     private List<Vector3> pathPoints = new List<Vector3>();
     private List<Vector3> pathTangents = new List<Vector3>();
 
-    void Start()
+    void Awake()
     {
         meshFilter = GetComponent<MeshFilter>();
         meshRenderer = GetComponent<MeshRenderer>();
