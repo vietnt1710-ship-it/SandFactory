@@ -2032,6 +2032,7 @@ MonoBehaviour:
   small: {fileID: 518756866762393510}
   normal: {fileID: 5673337194083401154}
   stack: {fileID: 0}
+  shadow: {fileID: 207373446229577974}
   ice: {fileID: 4697177764475225970}
   key: {fileID: 8564225991791341780}
   refKey: {fileID: 2051001110772747714}
@@ -3424,6 +3425,11 @@ PrefabInstance:
 --- !u!198 &205729853055898985 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8649860658513377602, guid: 8d2d23cf1f2d1da40a8e45b6f4333ba3, type: 3}
+  m_PrefabInstance: {fileID: 8849745095336389675}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &207373446229577974 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8660458686455168221, guid: 8d2d23cf1f2d1da40a8e45b6f4333ba3, type: 3}
   m_PrefabInstance: {fileID: 8849745095336389675}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &637121885033449357 stripped

@@ -6,30 +6,70 @@ using UnityEngine;
 
 public class SlotsManager : MonoBehaviour
 {
-    public List<Slot> items;
+    public List<Slot> allSlots;
+    public List<Slot> slotUnlocks;
 
     public void LoseAnim()
     {
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < slotUnlocks.Count; i++)
         {
             int idx = i;
             DOVirtual.DelayedCall(0.2f * idx, () =>
             {
-                items[idx].jar.jarAnimation.CloseCap();
+                slotUnlocks[idx].jar.jarAnimation.CloseCap();
 
             });
         }
     }
     private void Start()
     {
-        items = GetComponentsInChildren<Slot>().ToList();
+        
 
         LevelManager.I.tube.OnPouringDone += FindMatchingSlotWithLowestLiquid;
+    }
+
+    public void Unlock(int count)
+    {
+        allSlots = GetComponentsInChildren<Slot>().ToList();
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if(i == 0)
+            {
+                if(count >= 6)
+                {
+                    allSlots[i].ChangeStatus(false);
+                    slotUnlocks.Add(allSlots[i]);
+                }
+                else
+                {
+                    allSlots[i].ChangeStatus(true);
+                }
+
+            }
+            else if(i == 6)
+            {
+                if (count >= 7)
+                {
+                    allSlots[i].ChangeStatus(false);
+                    slotUnlocks.Add(allSlots[i]);
+                }
+                else
+                {
+                    allSlots[i].ChangeStatus(true);
+                }
+            }
+            else
+            {
+                allSlots[i].ChangeStatus(false);
+                slotUnlocks.Add(allSlots[i]);
+            }
+        }
     }
     public void FindMatchingSlotWithLowestLiquid(List<int> colorIDs)
     {
         // Sắp xếp items theo progressValue giảm dần (từ lớn nhất xuống nhỏ)
-        var sortedItems = items.OrderByDescending(item => item.progressValue).ToList();
+        var sortedItems = slotUnlocks.OrderByDescending(item => item.progressValue).ToList();
 
         for (int i = 0; i < sortedItems.Count; i++)
         {
@@ -43,7 +83,7 @@ public class SlotsManager : MonoBehaviour
 
     public Slot YoungestStackEmpty()
     {
-        foreach (Slot item in items)
+        foreach (Slot item in slotUnlocks)
         {
             if (item.isEmpty)
             {
@@ -76,9 +116,9 @@ public class SlotsManager : MonoBehaviour
     public bool CheckFullSlot()
     {
         if (LevelManager.I.tube.isPouring) return false;
-        for (int i = 0;i < items.Count;i++)
+        for (int i = 0;i < slotUnlocks.Count;i++)
         {
-            if (items[i].isEmpty) return false;
+            if (slotUnlocks[i].isEmpty) return false;
         }
         return true;
     }

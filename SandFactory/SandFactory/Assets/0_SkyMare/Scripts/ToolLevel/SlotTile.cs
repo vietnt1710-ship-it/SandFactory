@@ -459,7 +459,7 @@ namespace ToolLevel
         public void Clear()
         {
             isPipe = false;
-            pipeData.Clear();         
+            pipeData.Clear();                     
             type = Type._default;
             tileID = "1";
             value = "0";

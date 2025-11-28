@@ -30,6 +30,7 @@ public class SanJarAnimation2 : MonoBehaviour
     public Transform small;
     public Transform normal;
     public Transform stack;
+    public SpriteRenderer shadow;
 
     [Header("Frezze")]
     public Transform ice;
@@ -176,6 +177,7 @@ public class SanJarAnimation2 : MonoBehaviour
   
     public void JumpToPouringPoint(Transform pouringPoint, Action jumpComplete)
     {
+     
         float baseStartPosY = go_Base.transform.position.y;
         go_Base.DOMoveY(baseStartPosY + 0.075f, 0.1f);
 
@@ -188,7 +190,7 @@ public class SanJarAnimation2 : MonoBehaviour
             seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 135), 0.15f));//.SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo);
             seq3.Append(cap.DOLocalRotate(new Vector3(0, 0, 165), 0.15f).SetEase(Ease.OutBounce, 3));
         });
-
+        shadow.DOFade(0, 0.1f);
         StartCoroutine(Jump(transform, pouringPoint, jumpHeight /4, jumpPouringPointDuration, () =>
         {
             DOVirtual.DelayedCall(0.15f, () =>

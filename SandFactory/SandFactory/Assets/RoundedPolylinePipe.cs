@@ -524,14 +524,6 @@ public class RoundedPolylinePipe : MonoBehaviour
             }
         }
     }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveMeshToAsset();
-        }
-    }
     [ContextMenu("Save Mesh to Asset")]
     public void SaveMeshToAsset()
     {
@@ -561,8 +553,6 @@ public class RoundedPolylinePipe : MonoBehaviour
         AssetDatabase.SaveAssets();
 
         Debug.Log("Mesh saved at: " + assetPath);
-#else
-        Debug.LogWarning("Saving mesh is only supported in the Editor.");
 #endif
     }
 }

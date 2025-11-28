@@ -28,7 +28,7 @@ public class SegmentedColoredPipe : MonoBehaviour
     private List<Vector3> pathBinormals = new List<Vector3>();
 
     private MeshFilter currentMeshFilter;
-    private float initialFrameTwist = 0f;
+
 
     // Lưu số lượng điểm ban đầu để tính toán segment
     private int initialPointCount = 0;
@@ -52,19 +52,8 @@ public class SegmentedColoredPipe : MonoBehaviour
     }
 
     public List<SegmentIndexRange> segmentIndexRanges = new List<SegmentIndexRange>();
-    void Start()
-    {
-        //GenerateSegmentedPipe();
-    }
 
     bool isMoving = false;
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SaveMeshToAsset();
-        }
-    }
 
     public void RemoveVertextList(float time, int count = 1)
     {
@@ -203,7 +192,7 @@ public class SegmentedColoredPipe : MonoBehaviour
         int pointsPerExtraColor = Mathf.Max(10, pathPoints.Count / maxInitialColors);
         int pointsToAdd = extraColors * pointsPerExtraColor;
 
-        maxRenderPoints = pointsPerExtraColor * maxInitialColors;
+        //maxRenderPoints = pointsPerExtraColor * maxInitialColors;
 
         Debug.Log($"Adding {pointsToAdd} points for {extraColors} extra colors (total colors: {segmentColorIndexs.Count})");
 
@@ -414,7 +403,7 @@ public class SegmentedColoredPipe : MonoBehaviour
             Vector3 projectedOldNormal = (oldNormal - Vector3.Dot(oldNormal, newTangent) * newTangent).normalized;
             float angle = Mathf.Atan2(Vector3.Dot(Vector3.Cross(newNormal, projectedOldNormal), newTangent),
                                        Vector3.Dot(newNormal, projectedOldNormal));
-            initialFrameTwist = angle;
+            //initialFrameTwist = angle;
         }
         else
         {
@@ -682,8 +671,6 @@ public class SegmentedColoredPipe : MonoBehaviour
         AssetDatabase.SaveAssets();
 
         Debug.Log("Mesh saved at: " + assetPath);
-#else
-        Debug.LogWarning("Saving mesh is only supported in the Editor.");
 #endif
     }
     [ContextMenu("Clear All Data")]

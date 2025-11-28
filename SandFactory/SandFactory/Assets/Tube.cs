@@ -2,6 +2,7 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -27,15 +28,31 @@ public class Tube : MonoBehaviour
     public SegmentedColoredPipe segmentedColoredPipe;
     public void Start()
     {
-       
+        pourFx.Stop();
     }
+    public TMP_Text debugText;
     public void LoadLevelData(SandLevelData data)
     {
         passengerIndexs = new List<int>(data.tubes);
+        debugText.text = "Tube log o cho nay nay " + data.tubes.Count + "   new " + passengerIndexs.Count;
         GeneratePassenger();
     }
 
     Tween waterTween;
+    public ParticleSystem pourFx;
+
+    public void StartPourFx(Color color, float duration)
+    {
+        var renderer = pourFx.GetComponent<ParticleSystemRenderer>();
+
+        renderer.material.color = color;
+        var main = pourFx.main;
+
+        main.duration = duration;
+
+        pourFx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        pourFx.Play();
+    }
     public void FillWater(float target, float duration, float delay = 0f)
     {
         // Kill tween cũ nếu đang chạy
@@ -49,7 +66,6 @@ public class Tube : MonoBehaviour
             target,
             duration
         )
-
         .SetEase(Ease.Linear)
         .SetDelay(delay)
         .OnComplete(() => Debug.Log("Fill completed!"));
@@ -59,11 +75,15 @@ public class Tube : MonoBehaviour
     {
         int index = passengerIndexs[0] >= 0 ? passengerIndexs[0] - 1 : passengerIndexs[0] + 1;
 
+        float time = (duration * count) * 0.6f;
+        StartPourFx(colors.colorWithIDs[Mathf.Abs(index)].surfaceColor, time);
         waterDrop.material.color = colors.colorWithIDs[Mathf.Abs(index)].color;
         waterDrop.material.SetFloat("_Fill", 0);
-        FillWater(0.5f, 0.2f * count);
+        FillWater(0.5f, 0.16f * count);
 
-        DOVirtual.DelayedCall((duration * count)*0.6f, () =>
+        Debug.Log("DropWaterTime " + (duration * count) * 0.5f);
+
+        DOVirtual.DelayedCall((duration * count) * 0.5f, () =>
         {
             FillWater(1, 0.5f);
         });
@@ -71,6 +91,9 @@ public class Tube : MonoBehaviour
     public void Pour(int count)
     {
         StartDropWater(count);
+
+      
+
         float duration = this.duration * 0.7f;
         Sequence mainSeq = DOTween.Sequence();
         isPouring = true;

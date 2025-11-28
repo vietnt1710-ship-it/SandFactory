@@ -12,10 +12,18 @@ public class Slot : MonoBehaviour
     public MeshRenderer visualHolder;
 
     private SlotProgress progress;
-    private void Start()
+
+    public GameObject lockHolder;
+
+    public bool isLock;
+    public void ChangeStatus(bool isLock)
     {
+        this.isLock = isLock;
+        lockHolder.gameObject.SetActive(isLock);
         progress = GetComponentInChildren<SlotProgress>();
+        progress.gameObject.SetActive(!isLock);
     }
+
 
     public SandJar jar;
     public bool isReady;
@@ -33,10 +41,10 @@ public class Slot : MonoBehaviour
             float y = visualHolder.transform.position.y;
             visualHolder.transform.DOMoveY(y - 0.075f, 0.1f);
 
-           // Đặt color của base thành color của màu
-            var color = sandBox.color.color;
-            color.a = 0.75f;
-            visualHolder.material.SetColor("_Color", color);
+            // Đặt color của base thành color của màu
+            Color color = Color.Lerp(Color.white, sandBox.color.color, 0.4f);
+            //color.a = 0.3f;
+            visualHolder.material.color = color;//.SetColor("_Color", color);
         };
 
         onJumpComplete = () =>
@@ -83,7 +91,7 @@ public class Slot : MonoBehaviour
                         isEmpty = true;
                         float y = visualHolder.transform.position.y;
                         visualHolder.transform.DOMoveY(y + 0.075f, 0.1f);
-                        visualHolder.material.SetColor("_Color", Color.white);
+                        visualHolder.material.color = Color.white;//SetColor("_Color", Color.white);
                         progress.ChangePocess(0);
                     };
                 }
